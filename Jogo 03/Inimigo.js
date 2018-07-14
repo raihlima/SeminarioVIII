@@ -1,6 +1,6 @@
 function Inimigo(numero,pos){
   //Inimigo 1
-  this.x1 = 700 + (numero*180);
+  this.x1 = 700 + (numero*200);
   this.y1 = 0;
   this.width1 = 50;
   this.height1 = Math.random()*300+50;
@@ -24,7 +24,7 @@ Inimigo.prototype.desenhar = function (ctx) {
 };
 
 Inimigo.prototype.atualizar = function (ctx){
-  this.x1 -=50;
+  this.x1 -=1.5;
   this.x2 = this.x1;
 }
 

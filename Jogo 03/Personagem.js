@@ -52,15 +52,18 @@ Personagem.prototype.atualizar = function (dt) {
 
 Personagem.prototype.colisao =function (base){
 
-  if(((this.x>base.x)&&(this.x<base.x+base.width))||((this.x+this.width>base.x)&&(this.x+this.width<base.x+base.width))){
+  if(((this.x>base.x1)&&(this.x<base.x1+base.width1))||((this.x+this.width>base.x1)&&(this.x+this.width<base.x1+base.width1))){
 
-    if(((this.y>base.y)&&(this.y<base.y+base.height))||((this.y+this.height>base.y)&&(this.y+this.height<base.y+base.height))){
-      this.vx=0;
-      this.y=base.y-30;
+    if(((this.y>base.y1)&&(this.y<base.y1+base.height1))||((this.y+this.height>base.y1)&&(this.y+this.height<base.y1+base.height1))){
       return true;
     }
   }
-  if(((this.y>base.y)&&(this.y<base.y+base.height))||((this.y+this.height>base.y)&&(this.y+this.height<base.y+base.height))){
 
+  if(((this.x>base.x2)&&(this.x<base.x+base.width2))||((this.x+this.width>base.x2)&&(this.x+this.width<base.x2+base.width2))){
+
+    if(((this.y>base.y2)&&(this.y<base.y+base.height2))||((this.y+this.height>base.y2)&&(this.y+this.height<base.y2+base.height2))){
+      return true;
+    }
   }
+return false;
 }

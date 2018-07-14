@@ -15,7 +15,7 @@
       var ctx = canvas.getContext("2d");
       var dt = anterior = 0;
 
-      var personagem =  new Personagem(2);
+      var personagem =  0;
       var barra = new BarraStatus();
       var inimigo = [];
       for(var i=0;i<5;i++){
@@ -23,8 +23,8 @@
       }
 
       //Tela, gravidade do jogo
-      var cenario = 2;
-      var gravidade = 150;
+      var cenario = 0;
+      var gravidade = 180;
 
       //Ponto obtido durante o Jogo
       var pontoMax = 0;
@@ -53,7 +53,7 @@
 
           ctx.font = '50pt Arial';
           ctx.fillStyle = "wheat";
-          ctx.fillText("Selecione o personagem", 70, 150);
+          ctx.fillText("Selecione o personagem", 0, 150);
           ctx.font = '30pt Arial';
 
           //Naves
@@ -96,6 +96,11 @@
             if(inimigo[i].contaPonto()==true){
               pontoAtual+=1;
               inimigo[i].resetarInimigo();
+            }
+
+            //Testar colisao
+            if(personagem.colisao(inimigo[i])==true){
+                cenario=3;
             }
           }
 
@@ -156,6 +161,7 @@
           }
         }
           break;
+        case 32:
         case 38: //Botão Cima
         if(cenario==2){
               personagem.ay = -120;
@@ -178,6 +184,7 @@ addEventListener("keyup", function (e) {
             break;
         case 39: //Botão Direito
             break;
+        case 32:
         case 38: //Botão Cima
           if(cenario==2){
             personagem.ay = 0;
