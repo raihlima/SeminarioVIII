@@ -50,11 +50,12 @@
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
+          ctx.textAlign = "center";
           ctx.font = '70pt Arial';
           ctx.fillStyle = "wheat";
-          ctx.fillText("Moon Lander", 70, 150);
+          ctx.fillText("Moon Lander", 350, 150);
           ctx.font = '20pt Arial';
-          ctx.fillText("Pressione qualquer tecla para continuar", 120, 470);
+          ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
 
           requestAnimationFrame(atualizar);
 
@@ -64,10 +65,12 @@
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
+          ctx.textAlign = "center";
           ctx.font = '50pt Arial';
           ctx.fillStyle = "wheat";
-          ctx.fillText("Selecione a nave", 70, 150);
+          ctx.fillText("Selecione a nave", 350, 150);
           ctx.font = '30pt Arial';
+          ctx.textAlign = "start";
 
           //Naves
           if(foguete == 0){
@@ -129,15 +132,16 @@
           requestAnimationFrame(atualizar);
         } else if (cenario ==3){
           //Tela de Game Over
+          ctx.textAlign = "center";
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
           //Texto Game Over
           ctx.fillStyle = "wheat";
           ctx.font = '70pt Arial';
-          ctx.fillText("GAME OVER", 70, 150);
-          ctx.fillText("Pontuação", 130, 321);
-          ctx.fillText(pontoAtual, 320, 421);
+          ctx.fillText("GAME OVER", 350, 150);
+          ctx.fillText("Itens Recolhidos", 350, 321);
+          ctx.fillText(pontoAtual, 350, 421);
 
           anterior = t;
           requestAnimationFrame(atualizar);

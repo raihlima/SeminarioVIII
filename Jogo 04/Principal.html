@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Jogo 04</title>
+  <script src="BarraStatus.js"></script>
+  <script src="Canhao.js"></script>
+  <script src="Asteroide.js"></script>
+  <script src="Tiro.js"></script>
+  <script src="Predio.js"></script>
+</head>
+<body>
+  <h1>Jogo 04</h1>
+  <canvas id="canvas" width="700" height="500"></canvas>
+  <script>
+  var canvas = document.getElementsByTagName("canvas")[0];
+  var ctx = canvas.getContext("2d");
+  var dt = anterior = 0;
+
+  var canhao  = new Canhao(0);
+  var barra = new BarraStatus();
+
+  var asteroide = new Asteroide();
+
+  //Predios
+  var predio = [];
+  var predioConstruido=false;
+
+  //Tiros
+  var tiroNave = [];
+  var cadencia = 1;
+
+  //Tela
+  var cenario = 2;
+
+  //Ponto obtido durante o Jogo
+  var pontoAtual = 0;
+
+  //Trocar de fase
+  function trocaFase(){
+    this.fase = this.fase /this.pontoAtual - 1;
+  }
+
+  function atualizar(t){
+    //Tela Inicial
+    if(cenario == 0){
+      ctx.fillStyle = "black";
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+
+      ctx.font = '70pt Arial';
+      ctx.fillStyle = "wheat";
+      ctx.textAlign = "center";
+      ctx.fillText("Mísseis", 350, 150);
+      ctx.font = '20pt Arial';
+      ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
+
+      requestAnimationFrame(atualizar);
+
+
+    }
+    //Tela de Seleção
+    else if (cenario == 1){
+      ctx.fillStyle = "black";
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+
+      ctx.textAlign = "center";
+      ctx.font = '50pt Arial';
+      ctx.fillStyle = "wheat";
+      ctx.fillText("Selecione a nave", 350, 150);
+      ctx.font = '30pt Arial';
+      ctx.textAlign = "start";
+      //Naves
+      if(canhao == 0){
+        ctx.fillStyle = "white";
+        ctx.fillRect(90,290, 50, 50);
+      }  else if(canhao==1){
+        ctx.fillStyle = "white";
+        ctx.fillRect(290,290, 50, 50);
+      }  else if(canhao==2){
+        ctx.fillStyle = "white";
+        ctx.fillRect(490,290, 50, 50);
+      }
+
+      ctx.fillStyle = "green";
+      ctx.fillText("Verde", 70, 450);
+      ctx.fillRect(100,300, 30, 30);
+      ctx.fillStyle = "wheat";
+      ctx.fillText("Areia", 270, 450);
+      ctx.fillRect(300,300, 30, 30);
+      ctx.fillStyle = "teal";
+      ctx.fillText("Teal", 470, 450);
+      ctx.fillRect(500,300, 30, 30);
+
+      requestAnimationFrame(atualizar);
+
+    }
+    //Tela de Jogo
+    else if (cenario == 2){
+      dt = (t - anterior)/1000;
+
+      //Desenhar o fundo
+      ctx.fillStyle = "black";
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+
+      //desenha o chao
+      ctx.fillStyle = "SaddleBrown ";
+      ctx.fillRect(0,480, canvas.width,20);
+
+      //Desenhar os predios
+      if(predioConstruido==false){
+        for(var i=0; i<4; i++){
+          predio[i]=new Predio(i);
+        }
+        predioConstruido=true;
+      }
+
+      for(var i=0; i<4;i++){
+        predio[i].desenhar(ctx);
+        //predio[i].mover();
+      }
+
+      //Tiro do Canhão
+      cadencia+=0.1;
+
+      //Funções para asteroides
+      ctx.fillText(asteroide.y, 350, 150);
+      ctx.font = '30pt Arial';
+      ctx.textAlign = "start";
+      asteroide.desenhar(ctx);
+      asteroide.movimento(dt);
+      if(asteroide.verificaSaida()){
+        asteroide.calculaAngulo(Math.trunc(Math.random() * 4));
+        asteroide.reseta();
+      }
+
+      //Para tela de game over
+      if(canhao.vida<1){
+        cenario=3;
+      }
+
+      //Desenhar o Foguete e Barra
+      canhao.desenhar(ctx);
+      barra.desenhar(ctx, canhao.getVida(), this.pontoAtual, canhao.energia);
+
+      anterior = t;
+      requestAnimationFrame(atualizar);
+
+    } else if (cenario ==3){
+      //Tela de Game Over
+      ctx.fillStyle = "black";
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+
+      //Texto Game Over
+      ctx.fillStyle = "wheat";
+      ctx.font = '70pt Arial';
+      ctx.textAlign = "center";
+      ctx.fillText("GAME OVER", 350, 150);
+      ctx.fillText("Pontuação", 350, 321);
+      ctx.fillText(pontoAtual, 350, 421);
+
+      requestAnimationFrame(atualizar);
+    }
+  }
+
+  addEventListener("keydown", function (e) {
+    switch (e.keyCode) {
+      case 13://Enter
+      if(cenario==1){
+        cenario = 2;
+        canhao= new Foguete (canhao);
+        canhao.resetar();
+        canhao.vida=3;
+        canhao.y=30;
+      } else if(cenario==3){
+        cenario =2;
+      }
+      case 32://Espaço
+      if(cenario==2){
+        if(cadencia>1){
+          tiroNave.push(new Tiro(0,canhao));
+          cadencia=0;
+        }
+        break;
+      }
+      case 37: //Botão Esquerdo
+      if(cenario == 1){
+        if(canhao ==2 || canhao ==1){
+          canhao-=1;
+        }
+      }
+      if(cenario==2){
+        canhao.vx = -250;
+        break;
+      }
+      case 39: //Botão Direito
+      if(cenario == 1){
+        if(canhao == 0 || canhao == 1){
+          canhao += 1;
+        }
+      }
+      if(cenario==2){
+        canhao.vx =250;
+        break;
+      }
+      break;
+      case 38: //Botão Cima
+      if(cenario==2){
+        canhao.vy=-250;
+        break;
+      }
+      case 40: //Botão Baixo
+      if(cenario==2){
+        canhao.vy=250;
+        break;
+      }
+      default:
+      if(cenario==0){
+        cenario=1;
+      }  else if(cenario==3){
+        cenario=2;
+        canhao.vida=3;
+        canhao.resetar();
+      }
+    }
+  });
+  addEventListener("keyup", function (e) {
+    switch (e.keyCode) {
+      case 37: //Botão Esquerdo
+      if(cenario==2){
+
+      }
+      break;
+      case 39: //Botão Direito
+      if(cenario==2){
+      }
+      break;
+      case 38: //Botão Cima
+      if(cenario==2){
+        canhao.vy = 10;
+      }
+      break;
+      case 40: //Botão Baixo
+      if(cenario==2){
+        canhao.vy=0;
+        break;
+      }
+      default:
+      if(cenario==0){
+        cenario=1;
+      } else if(cenario==3){
+        canhao.vida=3;
+        canhao.resetar();
+        fase=1;
+        pontoAtual=0;
+        pontoMax=0;
+        cenario=2;
+      }
+    }
+  });
+  requestAnimationFrame(atualizar);
+  </script>
+</body>
+</html>

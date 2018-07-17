@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Jogo 08</title>
+    <script src="Personagem.js"></script>
+    <script src="Mapa.js"></script>
+    <script src="Bomba.js"></script>
+  </head>
+  <body>
+    <h1>Jogo 08</h1>
+    <canvas id="canvas" width="1000" height="550"></canvas>
+    <script>
+
+      var canvas = document.getElementsByTagName("canvas")[0];
+      var ctx = canvas.getContext("2d");
+
+      var dt = anterior = 0;
+
+      var mapa = new Mapa (13,19);
+
+      var personagem = new Personagem(1,mapa);
+
+      var bomba1 = [];
+      var bomba2 = [];
+
+
+      var cenario = 2;
+
+      function atualizar (t){
+        if(cenario == 0){
+          ctx.fillStyle = "black";
+          ctx.fillRect(0,0, canvas.width, canvas.height);
+
+          ctx.font = '70pt Arial';
+          ctx.fillStyle = "wheat";
+          ctx.textAlign = "center";
+          ctx.fillText("Bombardeador", 350, 150);
+          ctx.font = '20pt Arial';
+          ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
+
+          requestAnimationFrame(atualizar);
+        } else if (cenario ==2){
+
+          dt = (t - anterior)/1000;
+          mapa.desenhar(ctx);
+
+          personagem.desenhar(ctx);
+          personagem.mover(mapa,dt);
+
+          //Desenha as bombas
+
+          for(var i=0;i< bomba1.length;i++){
+            bomba1[i].desenhar(ctx);
+            bomba1[i].explode();
+            if(bomba1[i].color=="purple"){
+              delete bomba1[i];
+              break;
+            }
+            ctx.fillText(bomba1.length, 350, 470);
+          }
+
+          anterior = t;
+          requestAnimationFrame(atualizar);
+        }
+
+      }
+
+      addEventListener("keydown", function (e) {
+        switch (e.keyCode) {
+          case 13://Enter
+          break;
+          case 32://Espaço
+
+
+          if(bomba1.length<personagem.limiteBomba){
+            bomba1.push(new Bomba(personagem.gx, personagem.gy));
+            }
+          break;
+          case 37: //Botão Esquerdo
+          if(mapa.verificaParede(personagem.gy,personagem.gx-1)==false){
+            personagem.vx-=1;
+          }
+          break;
+          case 39: //Botão Direito
+          if(mapa.verificaParede(personagem.gy,personagem.gx+1)==false){
+            personagem.vx+=1;
+          }
+          break;
+          case 38: //Botão Cima
+          if(mapa.verificaParede(personagem.gy-1,personagem.gx)==false){
+          personagem.vy-=1;
+        }
+          break;
+          case 40: //Botão Baixo
+          if(mapa.verificaParede(personagem.gy+1,personagem.gx)==false){
+          personagem.vy+=1;
+        }
+          break;
+
+      default:
+          if(cenario==0){
+            cenario=1;
+          }
+
+}});
+addEventListener("keyup", function (e) {
+    switch (e.keyCode) {
+        case 37: //Botão Esquerdo
+          //  personagem.vx = 0;
+            break;
+        case 39: //Botão Direito
+          //  personagem.vx = 0;
+            break;
+        case 38: //Botão Cima
+          //  personagem.vy = 0;
+            break;
+        case 40: //Botão Baixo
+          //  personagem.vy=0;
+            break;
+        default:
+      }
+});
+
+
+
+      requestAnimationFrame(atualizar);
+    </script>
+  </body>
+</html>

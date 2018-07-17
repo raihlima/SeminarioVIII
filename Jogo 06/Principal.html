@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Jogo 06</title>
+    <script src="Personagem.js"></script>
+    <script src="Mapa.js"></script>
+    <script src="BarraStatus.js"></script>
+  </head>
+  <body>
+    <h1>Jogo 06</h1>
+    <canvas id="canvas" width="760" height="530"></canvas>
+    <script>
+
+      var canvas = document.getElementsByTagName("canvas")[0];
+      var ctx = canvas.getContext("2d");
+
+      var dt = anterior = 0;
+      var tempo = 90;
+
+      var mapa = new Mapa (13,19);
+      var barra = new BarraStatus();
+
+      var numPersonagem = 0;
+      var personagem = new Personagem(mapa);
+
+      var cenario = 0;
+
+      function atualizar (t){
+        if(cenario == 0){
+          ctx.fillStyle = "black";
+          ctx.fillRect(0,0, canvas.width, canvas.height);
+
+          ctx.font = '70pt Arial';
+          ctx.fillStyle = "wheat";
+          ctx.textAlign = "center";
+          ctx.fillText("Minas", 350, 150);
+          ctx.font = '20pt Arial';
+          ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
+
+          requestAnimationFrame(atualizar);
+        } else if (cenario==1){
+          //Seleção personagem
+        } else if (cenario ==2){
+
+          dt = (t - anterior)/1000;
+          mapa.desenhar(ctx);
+
+          personagem.desenhar(ctx);
+          personagem.mover(mapa,dt);
+
+          //Desenha a barra de status
+          barra.desenhar(ctx,Math.trunc(this.tempo),personagem.itens,mapa.retornarMinas(personagem.gy,personagem.gx),mapa.retornarItens(personagem.gy,personagem.gx));
+          anterior = t;
+
+          //Verificação de pisos
+          mapa.alteraVisibilidade(personagem.gy,personagem.gx);
+          if(mapa.verificaTesouro(personagem.gy,personagem.gx)==true){
+            personagem.itens+=1;
+          }
+          tempo -=0.015;
+          //condição game OVER
+          if(personagem.vida<1 || personagem.itens==mapa.numTesouros || tempo<=0){
+            cenario=3;
+          }
+
+          requestAnimationFrame(atualizar);
+        } else if (cenario ==3){
+          //Tela de Game Over
+          //Tela de vitoria
+          if(personagem.itens==mapa.numTesouros){
+            ctx.textAlign = "center";
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            //Texto Game Over
+            ctx.fillStyle = "wheat";
+            ctx.font = '70pt Arial';
+            ctx.fillText("Vitória", 350, 150);
+            //ctx.fillText("Pontuação", 350, 321);
+          //  ctx.fillText(pontoAtual, 350, 421);
+
+          } else {
+            //Tela de Derrota
+            ctx.textAlign = "center";
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            //Texto Game Over
+            ctx.fillStyle = "wheat";
+            ctx.font = '70pt Arial';
+            ctx.fillText("GAME OVER", 350, 150);
+          //  ctx.fillText("Pontuação", 350, 321);
+            ctx.fillText(pontoAtual, 350, 421);
+          }
+
+          anterior = t;
+          requestAnimationFrame(atualizar);
+        }
+
+      }
+
+      addEventListener("keydown", function (e) {
+        switch (e.keyCode) {
+          case 13://Enter
+          break;
+          case 32://Espaço
+          break;
+          case 37: //Botão Esquerdo
+          if(mapa.verificaParede(personagem.gy,personagem.gx-1)==false){
+            personagem.vx-=1;
+          }
+          break;
+          case 39: //Botão Direito
+          if(mapa.verificaParede(personagem.gy,personagem.gx+1)==false){
+            personagem.vx+=1;
+          }
+          break;
+          case 38: //Botão Cima
+          if(mapa.verificaParede(personagem.gy-1,personagem.gx)==false){
+          personagem.vy-=1;
+        }
+          break;
+          case 40: //Botão Baixo
+          if(mapa.verificaParede(personagem.gy+1,personagem.gx)==false){
+          personagem.vy+=1;
+        }
+          break;
+
+      default:
+          if(cenario==0){
+            cenario=2;
+          }
+
+}});
+addEventListener("keyup", function (e) {
+    switch (e.keyCode) {
+        case 37: //Botão Esquerdo
+          //  personagem.vx = 0;
+            break;
+        case 39: //Botão Direito
+          //  personagem.vx = 0;
+            break;
+        case 38: //Botão Cima
+          //  personagem.vy = 0;
+            break;
+        case 40: //Botão Baixo
+          //  personagem.vy=0;
+            break;
+        default:
+        if(cenario==0){
+        cenario=2;
+        }
+      }
+});
+
+      requestAnimationFrame(atualizar);
+    </script>
+  </body>
+</html>
