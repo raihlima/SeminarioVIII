@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Jogo 09</title>
+    <script src="Personagem.js"></script>
+    <script src="Mapa.js"></script>
+    <script src="BarraStatus.js"></script>
+  </head>
+  <body>
+    <h1>Jogo 09</h1>
+    <canvas id="canvas" width="600" height="530"></canvas>
+    <script>
+
+      var canvas = document.getElementsByTagName("canvas")[0];
+      var ctx = canvas.getContext("2d");
+
+      var dt = anterior = 0;
+      var tempo = 90;
+      var gravidade = 150;
+
+      var mapa = new Mapa(10,10,0);//new Mapa (13,13,0);
+      var vitoria = false;
+      var barra = new BarraStatus();
+
+      var numPersonagem = 0;
+      var personagem = new Personagem(mapa);
+      var tempo = 100;
+
+      var cenario = 2;
+
+      function atualizar (t){
+        if(cenario == 0){
+          ctx.fillStyle = "black";
+          ctx.fillRect(0,0, canvas.width, canvas.height);
+
+          ctx.font = '70pt Arial';
+          ctx.fillStyle = "wheat";
+          ctx.textAlign = "center";
+          ctx.fillText("Plataforma", 300, 150);
+          ctx.font = '20pt Arial';
+          ctx.fillText("Pressione qualquer tecla para continuar", 300, 470);
+
+          requestAnimationFrame(atualizar);
+        } else if (cenario==1){
+          //Seleção personagem
+        } else if (cenario ==2){
+
+          ctx.fillStyle = "white";
+          ctx.fillRect(0,0, canvas.width, canvas.height);
+
+          dt = (t - anterior)/1000;
+          mapa.desenhar(ctx,dt,personagem);
+
+          personagem.desenhar(ctx,mapa);
+          personagem.mover(mapa,dt,gravidade,ctx);
+
+          //Conferir colisão com pisos especiais:
+          if(mapa.verificaItem(personagem.gy,personagem.gx) == true || mapa.verificaItem(personagem.gyT,personagem.gxT) == true || mapa.verificaItem(personagem.gy,personagem.gxT) == true || mapa.verificaItem(personagem.gyT,personagem.gx) == true){
+            personagem.itens+=1;
+          }
+
+          if(mapa.verificaComida(personagem.gy,personagem.gx) == true || mapa.verificaComida(personagem.gyT,personagem.gxT) == true || mapa.verificaComida(personagem.gy,personagem.gxT) == true || mapa.verificaComida(personagem.gyT,personagem.gx) == true){
+            tempo+=50;
+            if(tempo>125){
+              tempo=125;
+            }
+          }
+          if(mapa.verificaEspinho(personagem.gy,personagem.gx) == true || mapa.verificaEspinho(personagem.gyT,personagem.gxT) == true || mapa.verificaEspinho(personagem.gy,personagem.gxT) == true || mapa.verificaEspinho(personagem.gyT,personagem.gx) == true){
+            cenario=3;
+          }
+
+
+          //Desenha a barra de status
+          barra.desenhar(ctx, tempo, personagem.itens);
+          //Mudanças de variaveis globais
+          tempo-=0.01;
+          if(tempo<0){
+            cenario=3;
+          }
+          if(personagem.itens>10){
+            vitoria=true;
+            cenario=3;
+          }
+
+
+          anterior = t;
+          requestAnimationFrame(atualizar);
+        } else if (cenario ==3){
+          //Tela de Game Over
+          //Tela de vitoria
+          if(vitoria==true){
+
+            ctx.textAlign = "center";
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            //Texto Game Over
+            ctx.fillStyle = "wheat";
+            ctx.font = '50pt Arial';
+            ctx.fillText("Vitória", 300, 150);
+            ctx.fillText("Itens Recolhidos:", 300, 321);
+            ctx.fillText(personagem.itens, 300, 421);
+          }
+          else {
+            //Tela de Derrota
+            ctx.textAlign = "center";
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            //Texto Game Over
+            ctx.fillStyle = "wheat";
+            ctx.font = '70pt Arial';
+            ctx.fillText("GAME OVER", 300, 150);
+            ctx.fillText("Pontuação", 350, 321);
+            ctx.fillText(personagem.itens, 350, 421);
+
+          }
+
+          anterior = t;
+          requestAnimationFrame(atualizar);
+        }
+
+      }
+
+
+      addEventListener("keydown", function (e) {
+        switch (e.keyCode) {
+          case 13://Enter
+          break;
+          case 32://Espaço
+          break;
+          case 37: //Botão Esquerdo
+
+            personagem.vx = +150;
+            mapa.vx=+150;
+
+          //personagem.vx = +150;
+          //mapa.vx=+150;
+          break;
+          case 39: //Botão Direito
+          if(personagem.bloqueioDireita==false){
+            personagem.vx = -150;
+            mapa.vx=-150;
+
+          }
+
+          break;
+          case 38: //Botão Cima
+            if(personagem.pulo == true){
+              personagem.vy=-230;
+            }
+
+
+          break;
+          case 40: //Botão Baixo
+          if(mapa.verificaLama(personagem.gy,personagem.gx) == true || mapa.verificaLama(personagem.gyT,personagem.gxT) == true || mapa.verificaLama(personagem.gy,personagem.gxT) == true || mapa.verificaLama(personagem.gyT,personagem.gx) == true){
+          //  personagem.vy=+75;
+          } else {
+          //  personagem.vy=+150;
+          }
+
+
+
+          break;
+
+      default:
+          if(cenario==0){
+            cenario=2;
+          }
+
+}});
+addEventListener("keyup", function (e) {
+    switch (e.keyCode) {
+        case 37: //Botão Esquerdo
+          personagem.vx = 0;
+          mapa.vx = 0;
+            break;
+        case 39: //Botão Direito
+        personagem.vx = 0;
+        mapa.vx = 0;
+            break;
+        case 38: //Botão Cima
+          personagem.vx = 0;
+          personagem.ay = 0;
+            break;
+        case 40: //Botão Baixo
+        //  personagem.vy=0;
+            break;
+        default:
+        if(cenario==0){
+        cenario=2;
+        }
+      }
+});
+
+      requestAnimationFrame(atualizar);
+    </script>
+  </body>
+</html>

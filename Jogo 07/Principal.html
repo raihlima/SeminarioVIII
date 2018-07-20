@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Jogo 07</title>
+    <script src="Personagem.js"></script>
+    <script src="Mapa.js"></script>
+    <script src="BarraStatus.js"></script>
+        <script src="ListaMapa.js"></script>
+  </head>
+  <body>
+    <h1>Jogo 07</h1>
+    <canvas id="canvas" width="600" height="530"></canvas>
+    <script>
+
+      var canvas = document.getElementsByTagName("canvas")[0];
+      var ctx = canvas.getContext("2d");
+
+      var dt = anterior = 0;
+      var tempo = 90;
+
+      var mapa = [];//new Mapa (13,13,0);
+      var mapaAtual = 0;
+      var vitoria = false;
+      var travarAndarCima = false;
+      var travarAndarBaixo = false;
+      var barra = new BarraStatus();
+
+      var numPersonagem = 0;
+      var personagem;
+      var energia = 100;
+
+      var cenario = 0;
+
+      function atualizar (t){
+        if(cenario == 0){
+          ctx.fillStyle = "black";
+          ctx.fillRect(0,0, canvas.width, canvas.height);
+
+          ctx.font = '70pt Arial';
+          ctx.fillStyle = "wheat";
+          ctx.textAlign = "center";
+          ctx.fillText("Labirinto", 300, 150);
+          ctx.font = '20pt Arial';
+          ctx.fillText("Pressione qualquer tecla para continuar", 300, 470);
+
+          requestAnimationFrame(atualizar);
+        } else if (cenario==1){
+          //Seleção personagem
+        } else if (cenario ==2){
+
+          if(mapa.length==0){
+            criarMapas();
+          }
+          ctx.fillStyle = "white";
+          ctx.fillRect(0,0, canvas.width, canvas.height);
+
+          dt = (t - anterior)/1000;
+          mapa[mapaAtual].desenhar(ctx);
+
+          personagem.desenhar(ctx);
+          personagem.mover(mapa[mapaAtual],dt);
+          //Conferir colisão com pisos especiais:
+          if(mapa[mapaAtual].verificaItem(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaItem(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaItem(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaItem(personagem.gyT,personagem.gx) == true){
+            personagem.itens+=1;
+          }
+          if(mapa[mapaAtual].verificaComida(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaComida(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaComida(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaComida(personagem.gyT,personagem.gx) == true){
+            energia+=50;
+            if(energia>125){
+              energia=125;
+            }
+          }
+
+          //Consumo de energia
+          if(mapa[mapaAtual].verificaCalor(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaCalor(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaCalor(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaCalor(personagem.gyT,personagem.gx) == true){
+            energia-=0.08;
+          } else {
+          energia-=0.03;
+          }
+
+          //Cair de andar
+          if(mapa[mapaAtual].verificaAndarBaixo(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaAndarBaixo(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaAndarBaixo(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaAndarBaixo(personagem.gyT,personagem.gx) == true){
+            if(mapaAtual==11){
+              vitoria=true;
+              cenario=3;
+            } else if(travarAndarBaixo==false){
+              mapaAtual+=1;
+              travarAndarCima=true;
+            }
+          }
+          //Subir de andar
+          if(mapa[mapaAtual].verificaAndarCima(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaAndarCima(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaAndarCima(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaAndarCima(personagem.gyT,personagem.gx) == true){
+            if(travarAndarCima==false){
+              mapaAtual-=1;
+              travarAndarBaixo=true;
+            }
+          }
+
+          //Destravar Andar
+          if(mapa[mapaAtual].verificaAndarCima(personagem.gy,personagem.gx) == false && mapa[mapaAtual].verificaAndarCima(personagem.gyT,personagem.gxT) == false && mapa[mapaAtual].verificaAndarCima(personagem.gy,personagem.gxT) == false && mapa[mapaAtual].verificaAndarCima(personagem.gyT,personagem.gx) == false){
+              travarAndarCima=false;
+          }
+
+          if(mapa[mapaAtual].verificaAndarBaixo(personagem.gy,personagem.gx) == false && mapa[mapaAtual].verificaAndarBaixo(personagem.gyT,personagem.gxT) == false && mapa[mapaAtual].verificaAndarBaixo(personagem.gy,personagem.gxT) == false && mapa[mapaAtual].verificaAndarBaixo(personagem.gyT,personagem.gx) == false){
+              travarAndarBaixo=false;
+          }
+
+
+          //Desenha a barra de status
+          barra.desenhar(ctx, energia, mapaAtual+1, personagem.itens);
+          //Mudanças de variaveis globais
+          if(energia<0){
+            cenario=3;
+          }
+          //energia-=0.05;
+          anterior = t;
+          requestAnimationFrame(atualizar);
+        } else if (cenario ==3){
+          //Tela de Game Over
+          //Tela de vitoria
+          if(vitoria==true){
+
+            ctx.textAlign = "center";
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            //Texto Game Over
+            ctx.fillStyle = "wheat";
+            ctx.font = '70pt Arial';
+            ctx.fillText("Vitória", 300, 150);
+            ctx.fillText("Itens Recolhidos:", 300, 321);
+            ctx.fillText(personagem.itens, 300, 421);
+          }
+          else {
+            //Tela de Derrota
+            ctx.textAlign = "center";
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            //Texto Game Over
+            ctx.fillStyle = "wheat";
+            ctx.font = '70pt Arial';
+            ctx.fillText("GAME OVER", 300, 150);
+             ctx.fillText("Pontuação", 350, 321);
+            ctx.fillText(personagem.itens, 350, 421);
+
+          }
+          /*
+        */
+
+          anterior = t;
+          requestAnimationFrame(atualizar);
+        }
+
+      }
+
+      function criarMapas(){
+        for(var i=0;i <12; i++){
+          mapa[i] = new Mapa(13,19,i);
+        }
+        personagem = new Personagem(mapa[mapaAtual]);
+      }
+
+      addEventListener("keydown", function (e) {
+        switch (e.keyCode) {
+          case 13://Enter
+          break;
+          case 32://Espaço
+          break;
+          case 37: //Botão Esquerdo
+          if(mapa[mapaAtual].verificaLama(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gx) == true){
+            personagem.vx=-75;
+          } else {
+            personagem.vx=-150;
+          }
+          break;
+          case 39: //Botão Direito
+          if(mapa[mapaAtual].verificaLama(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gx) == true){
+            personagem.vx=+75;
+          } else {
+            personagem.vx=+150;
+          }
+
+          break;
+          case 38: //Botão Cima
+          if(mapa[mapaAtual].verificaLama(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gx) == true){
+            personagem.vy=-75;
+          } else {
+            personagem.vy=-150;
+          }
+
+          break;
+          case 40: //Botão Baixo
+          if(mapa[mapaAtual].verificaLama(personagem.gy,personagem.gx) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gy,personagem.gxT) == true || mapa[mapaAtual].verificaLama(personagem.gyT,personagem.gx) == true){
+            personagem.vy=+75;
+          } else {
+            personagem.vy=+150;
+          }
+
+
+
+          break;
+
+      default:
+          if(cenario==0){
+            cenario=2;
+          }
+
+}});
+addEventListener("keyup", function (e) {
+    switch (e.keyCode) {
+        case 37: //Botão Esquerdo
+          personagem.vx = 0;
+            break;
+        case 39: //Botão Direito
+          personagem.vx = 0;
+            break;
+        case 38: //Botão Cima
+          personagem.vy = 0;
+            break;
+        case 40: //Botão Baixo
+          personagem.vy=0;
+            break;
+        default:
+        if(cenario==0){
+        cenario=2;
+        }
+      }
+});
+
+      requestAnimationFrame(atualizar);
+    </script>
+  </body>
+</html>
