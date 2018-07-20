@@ -16,8 +16,8 @@ Predio.prototype.desenhar = function (ctx) {
 
 Predio.prototype.demolir = function () {
   this.vida -=1;
-  if(this.vida ==0){
-    this.color=="green";
+  if(this.vida <1){
+    this.color = "black";
   } else {
     this.color = "blue";
   }
@@ -27,3 +27,21 @@ Predio.prototype.demolir = function () {
 Predio.prototype.mover = function () {
   this.x = this.x + this.vx;
 };
+
+Predio.prototype.verificaColisao = function (asteroide) {
+  if(this.color != "black"){
+    if((asteroide.x<this.x+this.width && asteroide.x>this.x)||(asteroide.x+asteroide.width>this.x && asteroide.x+asteroide.width<this.x+this.width)){
+      if((asteroide.y<this.y+this.height && asteroide.y>this.y)||(asteroide.y+asteroide.height>this.y && asteroide.y+asteroide.width<this.y+this.height)){
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
+Predio.prototype.morte

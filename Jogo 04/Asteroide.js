@@ -1,14 +1,13 @@
-function Asteroide(){
+function Asteroide(velocidade){
   this.x = Math.floor(Math.random() * 700);
-  this.y = 50;
-  this.vx = 0;
-  this.vy = 90;
+  this.y = 0;
+  this.vx =Math.floor(Math.random() * 300)-150;
+  this.vy = 50;
   this.width = 30;
   this.height = 30;
   this.color = "wheat";
   this.energia = 2;
-  this.velocidade = 1;
-  this.mirando = false;
+  this.velocidade = velocidade;
 }
 
 Asteroide.prototype.desenhar = function (ctx) {
@@ -17,12 +16,12 @@ Asteroide.prototype.desenhar = function (ctx) {
 };
 
 Asteroide.prototype.movimento = function (dt) {
-  this.y=this.y+this.vy*this.velocidade*dt;
-  this.x=this.x+this.vx*this.velocidade*dt;
+  this.y=this.y+ this.vy*(this.velocidade+1) * dt;
+  this.x=this.x+ this.vx * dt;
 };
 
 Asteroide.prototype.verificaSaida = function () {
-  if(this.y>480){
+  if(this.y>480 || this.x+this.width<0 || this.x>700){
     return true;
   } else {
     return false;
@@ -30,7 +29,7 @@ Asteroide.prototype.verificaSaida = function () {
 };
 
 Asteroide.prototype.verificaMorte = function () {
-  if(this.energia==0){
+  if(this.energia<1){
     return true;
   } else {
     return false;

@@ -1,13 +1,14 @@
 function Tiro (sentido, atirador){
-  this.x = atirador.x+(atirador.width/2);
+  this.x = atirador.x+(atirador.width/2) //*  Math.sin(atirador.angulo * Math.PI / 180) ;
   this.height = 10;
-  this.width = 3;
+  this.width = 10;
   this.ativo=true;
 
   if(sentido==0){
     this.color = "blue";
     this.y = atirador.y -3 - this.height;
-    this.vy = -400;
+    this.vy = -600 *  Math.cos(atirador.angulo * Math.PI / 180);
+    this.vx = 600 *  Math.sin(atirador.angulo * Math.PI / 180);
     this.corOriginal=this.color;
   } else if(sentido==1){
     this.color = "red";
@@ -22,8 +23,9 @@ Tiro.prototype.desenhar = function (ctx) {
   ctx.fillRect(this.x,this.y,this.width,this.height);
 };
 
-Tiro.prototype.atualizar = function (dt) {
-  this.y = this.y+this.vy *dt;
+Tiro.prototype.mover = function (dt) {
+  this.y = this.y + this.vy*dt;
+  this.x = this.x + this.vx*dt;
 
 };
 
@@ -38,8 +40,8 @@ Tiro.prototype.verificaSaidaTela = function(){
 }
 
 Tiro.prototype.verificaColisao = function (alvo) {
-  if(this.y >= alvo.y && this.y<=(alvo.y+alvo.height)){
-    if(this.x > alvo.x && this.x<=(alvo.x+alvo.width)){
+  if((this.y >= alvo.y && this.y<=alvo.y+alvo.height) || (this.y+this.height >= alvo.y && this.y+this.height <=alvo.y+alvo.height) ){
+    if((this.x > alvo.x && this.x<=alvo.x+alvo.width) || (this.x+this.width > alvo.x && this.x+this.width<=alvo.x+alvo.width)){
       //if(this.ativo==true){
         this.color = "darkblue";
         return true;

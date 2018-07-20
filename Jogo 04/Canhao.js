@@ -3,12 +3,15 @@ function Canhao(cor){
   this.y = 400;
   this.vx = 0;
   this.vy = 0;
-  this.ax = 0;
-  this.ay = 0;
+  this.angulo = 0;
+  this.aceleracaoAngular = 0;
   this.width = 30;
   this.height = 30;
   this.energia = 100;
   this.vida=3;
+
+  this.tX = this.x + 0.5 * this.width;
+  this.tY = this.y + 0.5 * this.height;
 
   //Seleção de color
   if(cor==0){
@@ -48,49 +51,20 @@ Canhao.prototype.resetar = function () {
 };
 
 Canhao.prototype.desenhar = function (ctx) {
+  this.angulo = this.angulo + this.aceleracaoAngular;
 
   ctx.fillStyle = this.color;
+  ctx.translate(this.tX, this.tY);
+  ctx.rotate((Math.PI / 180)* this.angulo); //this.vAng)); // rotate
+  ctx.translate(this.tX*(-1), this.tY*(-1));
   ctx.fillRect(this.x,this.y,this.width,this.height);
   //ctx.strokeStyle = "white";
 };
 
 
 Canhao.prototype.atualizar = function (dt) {
-  //this.vy = this.vy * dt;
-  this.y = this.y + this.vy * dt;
+  //this.y = this.y + this.vy *0.015;
 
-  this.vx = this.vx + this.ax*dt;
-  if(this.x<0){
-    this.x=0;
-    this.vx=0;
-  } else if(this.x>669){
-    this.x=669;
-        this.vx=0;
-  } else {
-    this.x = this.x + this.vx * dt;
-  }
-
-  if(this.y<30){
-    this.y=30;
-    this.vy=0;
-  }
-  if(this.y>470){
-    this.y=470;
-  }
+  this.tX = this.x + 0.5 * this.width;
+  this.tY = this.y + 0.5 * this.height;
 };
-
-Canhao.prototype.colisao = function (inimigo){
-  if(this.y>=inimigo.y && this.y<=(inimigo.y+inimigo.height)){
-    if(this.x>=inimigo.x && this.x<=(inimigo.x+inimigo.width)){
-      return true;
-    }
-    return false;
-  }
-  if(this.y+ this.height>=inimigo.y && this.y + this.height <=(inimigo.y+inimigo.height)){
-    if(this.x + this.width>=inimigo.x && this.x + this.width <=(inimigo.x+inimigo.width)){
-      return true;
-    }
-    return false;
-  }
-  return false;
-}

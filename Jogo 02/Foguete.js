@@ -37,7 +37,7 @@ Foguete.prototype.getVy = function () {
 
 Foguete.prototype.resetar = function () {
   this.x = Math.floor(Math.random() * 700);
-  this.y = 0;
+  this.y = 450;
   this.vx = 0;
   this.vy = 0;
   this.ax = 0;
