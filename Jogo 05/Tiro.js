@@ -1,18 +1,47 @@
 function Tiro (sentido, atirador){
-  this.x = atirador.x+(atirador.width/2);
-  this.height = 10;
-  this.width = 3;
+
   this.ativo=true;
 
   if(sentido==0){
-    this.color = "blue";
-    this.y = atirador.y -3 - this.height;
+    this.height = 10;
+    this.width = 5;
+    this.x = atirador.x+(atirador.width/2);
+    this.y = atirador.y - 5 - this.height;
+    this.color = "yellow";
+    this.vx = 0;
     this.vy = -400;
     this.corOriginal=this.color;
   } else if(sentido==1){
-    this.color = "red";
-    this.y = atirador.y + atirador.height +3;
-    this.vy = 200;
+    this.height = 5;
+    this.width = 10;
+    this.x = atirador.x + (atirador.width) +5;
+    this.y = atirador.y + (atirador.height/2);
+    this.color = "yellow";
+    this.vx = 400;
+    this.vy = 0;
+    this.corOriginal=this.color;
+
+
+  } else if(sentido==2){
+    this.height = 10;
+    this.width = 5;
+    this.x = atirador.x + (atirador.width/2);
+    this.y = atirador.y + (atirador.height) + 5;
+    this.color = "yellow";
+    this.vx = 0;
+    this.vy = 400;
+    this.corOriginal=this.color;
+
+
+  } else if(sentido == 3){
+    this.height = 5;
+    this.width = 10;
+    this.x = atirador.x - 5 - this.width;
+    this.y = atirador.y + (atirador.height/2);
+    this.color = "yellow";
+    this.vx = -400;
+    this.vy = 0;
+    this.corOriginal=this.color;
   }
 
 }
@@ -22,8 +51,9 @@ Tiro.prototype.desenhar = function (ctx) {
   ctx.fillRect(this.x,this.y,this.width,this.height);
 };
 
-Tiro.prototype.atualizar = function (dt) {
+Tiro.prototype.mover = function (dt) {
   this.y = this.y+this.vy *dt;
+  this.x = this.x+this.vx *dt;
 
 };
 
