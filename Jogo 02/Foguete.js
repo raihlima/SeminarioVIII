@@ -9,10 +9,11 @@ function Foguete(cor){
   this.height = 30;
   this.energia = 100;
   this.vida=3;
+  this.quantidadeTiro = 1;
 
   //Seleção de color
   if(cor==0){
-    this.color = "lime";
+    this.color = "green";
     this.corOriginal=this.color;
   } else if(cor==1){
     this.color = "wheat";

@@ -1,6 +1,6 @@
 function Foguete(cor){
   this.x = Math.floor(Math.random() * 700);
-  this.y = 0;
+  this.y = -8900;
   this.vx = 0;
   this.vy = 0;
   this.ax = 0;
@@ -11,7 +11,7 @@ function Foguete(cor){
   this.vida=3;
   //Seleção de color
   if(cor==0){
-    this.color = "lime";
+    this.color = "green";
   } else if(cor==1){
     this.color = "wheat";
   } else {

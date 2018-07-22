@@ -1,5 +1,6 @@
 function Inimigo(numero,pos){
   //Inimigo 1
+  this.id = numero;
   this.x1 = 700 + (numero*200);
   this.y1 = 0;
   this.width1 = 50;
@@ -37,7 +38,7 @@ Inimigo.prototype.contaPonto = function (){
 }
 
 Inimigo.prototype.resetarInimigo = function(){
-  this.x1=700;
+  this.x1=800;
   this.height1 = Math.random()*200+50;
   this.sobra = this.height1;
   this.y2 = this.sobra+150;

@@ -18,13 +18,14 @@
       var personagem =  0;
       var barra = new BarraStatus();
       var inimigo = [];
+
       for(var i=0;i<5;i++){
         inimigo[i]=new Inimigo(i);
       }
 
       //Tela, gravidade do jogo
       var cenario = 0;
-      var gravidade = 180;
+      var gravidade = 200;
 
       //Ponto obtido durante o Jogo
       var pontoMax = 0;
@@ -37,11 +38,12 @@
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
+          ctx.textAlign = "center";
           ctx.font = '70pt Arial';
           ctx.fillStyle = "wheat";
-          ctx.fillText("Flappy", 70, 150);
+          ctx.fillText("Flappy", 350, 150);
           ctx.font = '20pt Arial';
-          ctx.fillText("Pressione qualquer tecla para continuar", 120, 470);
+          ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
 
           requestAnimationFrame(atualizar);
 
@@ -51,11 +53,13 @@
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
-          ctx.font = '50pt Arial';
+          ctx.textAlign = "center";
+          ctx.font = '40pt Arial';
           ctx.fillStyle = "wheat";
-          ctx.fillText("Selecione o personagem", 0, 150);
+          ctx.fillText("Selecione o personagem", 350, 150);
           ctx.font = '30pt Arial';
 
+          ctx.textAlign = "start";
           //Naves
           if(personagem == 0){
             ctx.fillStyle = "white";
@@ -82,7 +86,7 @@
 
         } else if (cenario == 2){
           dt = (t - anterior)/1000;
-
+          ctx.textAlign = "start";
           //Desenhar o fundo
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
@@ -110,7 +114,9 @@
 
 
           //Teste colisao
-
+          if(personagem.vida<1){
+            cenario=3;
+          }
 
           barra.desenhar(ctx,this.pontoAtual, this.pontoMax);
           anterior = t;
@@ -122,11 +128,16 @@
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
           //Texto Game Over
+          ctx.textAlign = "center";
           ctx.fillStyle = "wheat";
           ctx.font = '70pt Arial';
-          ctx.fillText("GAME OVER", 70, 150);
-          ctx.fillText("Pontuação", 130, 321);
-          ctx.fillText(pontoAtual, 320, 421);
+          ctx.fillText("GAME OVER", 350, 150);
+          ctx.fillText("Pontuação", 350, 321);
+          ctx.fillText(pontoAtual, 350, 421);
+
+          for(var i=0;i<5;i++){
+            inimigo[i]=new Inimigo(i);
+          }
 
           anterior = t;
           requestAnimationFrame(atualizar);
@@ -195,6 +206,7 @@ addEventListener("keyup", function (e) {
           cenario=1;
           } else if(cenario==3){
             personagem.resetar();
+            pontoAtual = 0;
             pontoAtual=0;
             pontoMax=0;
               cenario=2;

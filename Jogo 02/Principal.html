@@ -7,6 +7,7 @@
     <script src="Foguete.js"></script>
     <script src="Inimigo.js"></script>
     <script src="Tiro.js"></script>
+    <script src="Item.js"></script>
   </head>
   <body>
     <h1>Jogo 02</h1>
@@ -20,8 +21,10 @@
       var foguete  = 0;
       var barra = new BarraStatus();
       var inimigo = [];
-      var contInimigoMortos = 0;
+      //var contInimigoMortos = 0;
       var cadenciaInimigo = 10;
+
+      var item = [];
 
       var imunidade = 10;
 
@@ -129,14 +132,23 @@
             inimigo[i].mover(dt);
 
             //verifica se inimigo saiu da tela ou acabou a energia
-            if(inimigo[i].verificaSaida()==true || inimigo[i].verificaMorte()==true){
+            if(inimigo[i].verificaSaida()==true){
               inimigo.splice(i,1);
               break;
+            } else if(inimigo[i].verificaMorte()==true){
+              var random = Math.random()*100;
+              if(random<18){
+                item.push(new Item(inimigo[i].x,inimigo[i].y));
+              }
+              pontoAtual+=8;
+              inimigo.splice(i,1);
+              break;
+
             }
 
             //verifica cadencia de tiro inimigo e atira
             if(inimigo[i].cadencia>=2){
-              tiroInimigo.push(new Tiro(1,inimigo[i]))
+              tiroInimigo.push(new Tiro(1,inimigo[i],0))
               inimigo[i].cadencia=0;
             }
           }
@@ -189,6 +201,41 @@
             }
           }
 
+        //Funções para itens
+        for(var i=0;i<item.length;i++){
+          item[i].desenhar(ctx);
+          item[i].mover(dt);
+        }
+
+        //Pegar Item
+        for(var i=0;i<item.length;i++){
+          if(item[i].verificaColisao(foguete)==true){
+            if(item[i].id==0){
+              imunidade = -60;
+              item.splice(i,1);
+              break;
+            } else if(item[i].id==1){
+              pontoAtual += 50;
+              item.splice(i,1);
+              break;
+            } else if (item[i].id==2){
+              foguete.quantidadeTiro+=1;
+              item.splice(i,1);
+              break;
+            } else if( item[i].id==3){
+              for(var j =0;j<inimigo.length;j++){
+                inimigo[j].energia=-1;
+              }
+              item.splice(i,1);
+              break;
+
+            } else if( item[i].id==4){
+              foguete.vida+=1;
+              item.splice(i,1);
+              break;
+          }
+        }
+      }
 
         //  foguete.mover(dt);
 
@@ -197,7 +244,7 @@
         if(this.imunidade<=10){
           this.imunidade+=0.1;
         }
-        if(Math.trunc(this.imunidade)%2 ==1){
+        if(Math.abs(Math.trunc(this.imunidade)%2) ==1){
           foguete.color="yellow";
         } else {
           foguete.color = foguete.corOriginal;
@@ -243,7 +290,7 @@
 
       function criarInimigos(){
         if(cadenciaInimigo>3){
-          inimigo.push(new Inimigo());
+          inimigo.push(new Inimigo(pontoAtual/200));
           cadenciaInimigo=0;
         }
 
@@ -264,8 +311,20 @@
         case 32://Espaço
           if(cenario==2){
             if(cadencia>1){
-              tiroNave.push(new Tiro(0,foguete));
-              cadencia=0;
+              if(foguete.quantidadeTiro==1){
+                tiroNave.push(new Tiro(0,foguete,0));
+                cadencia=0;
+              } else if(foguete.quantidadeTiro==2){
+                tiroNave.push(new Tiro(0,foguete,1));
+                tiroNave.push(new Tiro(0,foguete,2));
+                cadencia=0;
+
+              } else {
+                tiroNave.push(new Tiro(0,foguete,0));
+                tiroNave.push(new Tiro(0,foguete,1));
+                tiroNave.push(new Tiro(0,foguete,2));
+                cadencia=0;
+              }
             }
             break;
           }

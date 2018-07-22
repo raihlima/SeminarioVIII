@@ -1,8 +1,11 @@
 function Personagem (x,mapa){
-  this.height = 30;
-  this.width = 30;
+  this.height = 40;
+  this.width = 40;
   this.SIZE = 40;
   this.limiteBomba = 1;
+  this.tamanhoBomba =2;
+  this.velocidadeDetonacao = 0;
+  this.vida=1;
 
   //se for jogador 1
   if(x==1){
@@ -49,18 +52,6 @@ Personagem.prototype.moverNoMapa = function (map, dt) {
   };
 
   Personagem.prototype.mover = function (map, dt) {
-  ctx.fillStyle = "wheat";
-  ctx.textAlign = "center";
-  ctx.font = '20pt Arial';
-  ctx.fillText(this.vx, 10, 150);
-  ctx.fillText(this.vy, 50, 150);
-  ctx.fillText(this.gx, 10, 250);
-  ctx.fillText(this.gy, 50, 250);
-  ctx.fillText(map.verificaParede(this.gy-1,this.gx), 250, 150);
-  ctx.fillText(map.verificaParede(this.gy,this.gx-1), 150, 250);
-  ctx.fillText(map.verificaParede(this.gy+1,this.gx+1), 350, 250);
-  ctx.fillText(map.verificaParede(this.gy+1,this.gx), 250, 350);
-
   this.gx = Math.floor(this.vx);
   this.gy = Math.floor(this.vy);
   this.x =  this.gx * map.SIZE;

@@ -1,8 +1,20 @@
-function Tiro (sentido, atirador){
-  this.x = atirador.x+(atirador.width/2);
-  this.height = 10;
-  this.width = 3;
-  this.ativo=true;
+function Tiro (sentido, atirador, qtd){
+  if(qtd==0){
+    this.x = atirador.x+(atirador.width/2)-2.5;
+    this.height = 10;
+    this.width = 5;
+    this.ativo=true;
+  } else if (qtd==1){
+    this.x = atirador.x;
+    this.height = 10;
+    this.width = 5;
+    this.ativo=true;
+  } else if (qtd==2){
+    this.x = atirador.x+atirador.width-5;
+    this.height = 10;
+    this.width = 5;
+    this.ativo=true;
+  }
 
   if(sentido==0){
     this.color = "blue";
@@ -41,10 +53,10 @@ Tiro.prototype.verificaColisao = function (alvo) {
   if((this.y >= alvo.y && this.y<=alvo.y+alvo.height) || (this.y+this.height >= alvo.y && this.y+this.height <=alvo.y+alvo.height) ){
     if((this.x > alvo.x && this.x<=alvo.x+alvo.width) || (this.x+this.width > alvo.x && this.x+this.width<=alvo.x+alvo.width)){
       //if(this.ativo==true){
-        this.color = "darkblue";
-        return true;
+      this.color = "darkblue";
+      return true;
       //}
-    //  return false;
+      //  return false;
     }
     return false;
   }

@@ -7,9 +7,10 @@ function Personagem(cor){
   this.ay = 0;
   this.width = 30;
   this.height = 30;
+  this.vida=1;
   //Seleção de color
   if(cor==0){
-    this.color = "lime";
+    this.color = "green";
   } else if(cor==1){
     this.color = "wheat";
   } else {
@@ -20,13 +21,14 @@ function Personagem(cor){
 
 Personagem.prototype.resetar = function () {
   this.x = 10;
-  this.y = 30;
+  this.y = 0;
   this.vx = 0;
   this.vy = 0;
   this.ax = 0;
   this.ay = 0;
   this.width = 30;
   this.height = 30;
+  this.vida=1;
 };
 
 Personagem.prototype.desenhar = function (ctx) {
@@ -45,8 +47,7 @@ Personagem.prototype.atualizar = function (dt) {
     this.vy=0;
   }
   if(this.y>500){
-    this.vida-=1
-    this.resetar();
+    this.vida-=1;
   }
 };
 
@@ -59,9 +60,9 @@ Personagem.prototype.colisao =function (base){
     }
   }
 
-  if(((this.x>base.x2)&&(this.x<base.x+base.width2))||((this.x+this.width>base.x2)&&(this.x+this.width<base.x2+base.width2))){
+  if(((this.x>base.x2)&&(this.x<base.x2+base.width2))||((this.x+this.width>base.x2)&&(this.x+this.width<base.x2+base.width2))){
 
-    if(((this.y>base.y2)&&(this.y<base.y+base.height2))||((this.y+this.height>base.y2)&&(this.y+this.height<base.y2+base.height2))){
+    if(((this.y>base.y2)&&(this.y<base.y2+base.height2))||((this.y+this.height>base.y2)&&(this.y+this.height<base.y2+base.height2))){
       return true;
     }
   }

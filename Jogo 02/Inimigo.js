@@ -1,4 +1,4 @@
-function Inimigo(){
+function Inimigo(ponto){
   this.x = Math.floor(Math.random() * 700);
   this.y = 10;
   this.vx = (Math.random() * 2-1)* 100;
@@ -6,8 +6,8 @@ function Inimigo(){
   this.width = 30;
   this.height = 30;
   this.color = "red";
-  this.energia = 2;
-  this.cadencia=2;
+  this.energia = 2+ponto;
+  this.cadencia = 2;
 }
 
 Inimigo.prototype.desenhar = function (ctx) {
@@ -42,7 +42,7 @@ Inimigo.prototype.verificaSaida = function () {
 };
 
 Inimigo.prototype.verificaMorte = function () {
-  if(this.energia==0){
+  if(this.energia<=0){
     return true;
   } else {
     return false;
