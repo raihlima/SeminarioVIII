@@ -10,6 +10,9 @@ function Predio(x){
   this.vida = 3;
   this.color = "gray";
 
+  this.somQuebrado = new Audio();
+  this.somQuebrado.src = "Som/Crash.m4a";
+
 }
 
 Predio.prototype.desenhar = function (ctx) {
@@ -57,6 +60,8 @@ Predio.prototype.demolir = function () {
   this.vida -=1;
   if(this.vida <1){
     this.color = "black";
+    this.somQuebrado.load();
+    this.somQuebrado.play();
   } else {
     this.color = "blue";
   }

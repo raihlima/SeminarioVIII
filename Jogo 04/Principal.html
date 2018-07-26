@@ -13,6 +13,29 @@
   <h1>Jogo 04</h1>
   <canvas id="canvas" width="700" height="500"></canvas>
   <script>
+  //Audio
+  var somIni = new Audio();
+  somIni.src = "Som/Inicio.m4a";
+
+  var somFim = new Audio();
+  somFim.src = "Som/Fim.m4a";
+
+  var somSel = new Audio();
+  somSel.src = "Som/Selecao.m4a";
+
+  var somTiro = new Audio();
+  somTiro.src = "Som/Tiro.m4a";
+
+  var somExplosao = new Audio();
+  somExplosao.src = "Som/Explosao.m4a";
+
+  var somDano = new Audio();
+  somDano.src = "Som/Dano.m4a";
+
+
+
+
+  //Tela
   var canvas = document.getElementsByTagName("canvas")[0];
   var ctx = canvas.getContext("2d");
   var dt = anterior = 0;
@@ -50,6 +73,7 @@
   function atualizar(t){
     //Tela Inicial
     if(cenario == 0){
+      somIni.play();
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -70,6 +94,7 @@
     }
     //Tela de Seleção
     else if (cenario == 1){
+      somIni.play();
       var tiroIMG = new Image();
       tiroIMG.src = "tiro.png";
       ctx.fillStyle = "black";
@@ -121,6 +146,8 @@
     }
     //Tela de Jogo
     else if (cenario == 2){
+      somIni.play();
+      somFim.pause();
 
       dt = (t - anterior)/1000;
 
@@ -164,6 +191,8 @@
       for(var i=0;i<predio.length;i++){
         for(var j=0;j<asteroide.length;j++){
           if(predio[i].verificaColisao(asteroide[j])==true){
+            somDano.load();
+            somDano.play();
             predio[i].demolir();
             asteroide.splice(j,1);
             break;
@@ -182,6 +211,8 @@
       //Dá ponto para morte de asteroide
       for(var i=0;i<asteroide.length;i++){
         if(asteroide[i].verificaMorte()==true){
+          somExplosao.load();
+          somExplosao.play();
           asteroide.splice(i,1);
           pontoAtual+=8;
           break;
@@ -191,6 +222,7 @@
       //Para tela de game over
       if(predio[0].color == "black" && predio[1].color == "black" && predio[2].color == "black" && predio[3].color == "black"){
         cenario=3;
+        somFim.play();
       }
       //desenhar os tiros
       for(var i=0; i<tiro.length;i++){
@@ -231,6 +263,8 @@
 
     } else if (cenario ==3){
       //Tela de Game Over
+      somIni.load();
+
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -267,6 +301,8 @@
       case 32://Espaço
       if(cenario==2){
         if(cadencia>1){
+          somTiro.load();
+          somTiro.play();
           tiro.push(new Tiro(0,canhao));
           cadencia=0;
         }
@@ -278,6 +314,8 @@
       case 37: //Botão Esquerdo
       if(cenario == 1){
         if(canhao == 1 || canhao == 2){
+          somSel.load();
+          somSel.play();
           canhao -= 1;
         }
       } else if (cenario == 2){
@@ -287,6 +325,8 @@
       case 39: //Botão Direito
       if(cenario == 1){
         if(canhao == 0 || canhao == 1){
+          somSel.load();
+          somSel.play();
           canhao += 1;
         }
       } else if(cenario == 2){
