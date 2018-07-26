@@ -1,8 +1,11 @@
 function Tiro (sentido, atirador){
+  this.imagem = new Image();
+  this.imagem.src = "tiro.png";
   this.x = atirador.x+(atirador.width/2) //*  Math.sin(atirador.angulo * Math.PI / 180) ;
   this.height = 10;
   this.width = 10;
-  this.ativo=true;
+  this.ativo = true;
+  this.cor = atirador.color;
 
   if(sentido==0){
     this.color = "blue";
@@ -19,8 +22,17 @@ function Tiro (sentido, atirador){
 }
 
 Tiro.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
+  //ctx.fillStyle = this.color;
+  //ctx.fillRect(this.x,this.y,this.width,this.height);
+  if(this.cor=="lime"){
+    ctx.drawImage(this.imagem,0,0,10,10,this.x,this.y,this.width,this.height);
+  } else if(this.cor == "wheat"){
+    ctx.drawImage(this.imagem,10,0,10,10,this.x,this.y,this.width,this.height);
+
+  } else if(this.cor=="Teal"){
+    ctx.drawImage(this.imagem,20,0,10,10,this.x,this.y,this.width,this.height);
+
+  }
 };
 
 Tiro.prototype.mover = function (dt) {

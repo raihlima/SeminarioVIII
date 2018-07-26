@@ -17,6 +17,11 @@
   var ctx = canvas.getContext("2d");
   var dt = anterior = 0;
 
+  var imagem = new Image();
+  imagem.src="bg.png";
+  var bg = new Image();
+  bg.src = "bgJogo.png";
+
   var canhao  = 0;
   var barra = new BarraStatus();
 
@@ -48,10 +53,14 @@
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
 
+      ctx.drawImage(imagem,0,0);
+
       ctx.font = '70pt Arial';
       ctx.fillStyle = "wheat";
+      ctx.strokeStyle = "black";
       ctx.textAlign = "center";
-      ctx.fillText("Mísseis", 350, 150);
+      ctx.strokeText("Asteroides", 350, 150);
+      ctx.fillText("Asteroides", 350, 150);
       ctx.font = '20pt Arial';
       ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
 
@@ -61,42 +70,58 @@
     }
     //Tela de Seleção
     else if (cenario == 1){
+      var tiroIMG = new Image();
+      tiroIMG.src = "tiro.png";
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
+
+      ctx.drawImage(imagem,0,0);
 
       ctx.textAlign = "center";
       ctx.font = '50pt Arial';
       ctx.fillStyle = "wheat";
-      ctx.fillText("Selecione a nave", 350, 150);
+      ctx.strokeStyle = "black";
+      ctx.fillText("Selecione o tiro", 350, 150);
+      ctx.strokeText("Selecione o tiro", 350, 150);
       ctx.font = '30pt Arial';
       ctx.textAlign = "start";
-      //Naves
+
+      //Tiros
+      ctx.strokeStyle = "white";
       if(canhao == 0){
-        ctx.fillStyle = "white";
-        ctx.fillRect(90,290, 50, 50);
+
+        ctx.strokeRect(90,290, 50, 50);
       }  else if(canhao==1){
-        ctx.fillStyle = "white";
-        ctx.fillRect(290,290, 50, 50);
+
+        ctx.strokeRect(290,290, 50, 50);
       }  else if(canhao==2){
-        ctx.fillStyle = "white";
-        ctx.fillRect(490,290, 50, 50);
+
+        ctx.strokeRect(490,290, 50, 50);
       }
 
       ctx.fillStyle = "green";
       ctx.fillText("Verde", 70, 450);
-      ctx.fillRect(100,300, 30, 30);
+    //  ctx.fillRect(100,300, 30, 30);
       ctx.fillStyle = "wheat";
       ctx.fillText("Areia", 270, 450);
-      ctx.fillRect(300,300, 30, 30);
+    //  ctx.fillRect(300,300, 30, 30);
       ctx.fillStyle = "teal";
-      ctx.fillText("Teal", 470, 450);
-      ctx.fillRect(500,300, 30, 30);
+      ctx.fillText("Azul", 470, 450);
+      //ctx.fillRect(500,300, 30, 30);
+
+        ctx.drawImage(tiroIMG,0,0,10,10,100,300, 30, 30);
+
+        ctx.drawImage(tiroIMG,10,0,10,10,300,300, 30, 30);
+
+        ctx.drawImage(tiroIMG,20,0,10,10,500,300, 30, 30);
+
 
       requestAnimationFrame(atualizar);
 
     }
     //Tela de Jogo
     else if (cenario == 2){
+
       dt = (t - anterior)/1000;
 
       criarMeteoro();
@@ -105,9 +130,10 @@
       //Desenhar o fundo
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
+      ctx.drawImage(bg,0,0);
 
       //desenha o chao
-      ctx.fillStyle = "SaddleBrown ";
+      ctx.fillStyle = "gray ";
       ctx.fillRect(0,480, canvas.width,20);
 
       //Desenhar os predios

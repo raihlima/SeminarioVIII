@@ -15,6 +15,7 @@ BarraStatus.prototype.desenhar = function (ctx, vida,pontoAtual, combustivel, vy
 
 
   //Texto no Menu
+  ctx.textAlign="start";
   ctx.fillStyle = 'white';
   ctx.font = '14pt Arial';
   ctx.fillText("Vida: ", 20, 21);

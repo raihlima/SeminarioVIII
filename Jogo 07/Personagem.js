@@ -1,4 +1,11 @@
-function Personagem (map){
+function Personagem (map,id){
+  this.imagem = new Image();
+  this.imagem.src = "personagem.png";
+  this.id = id;
+  this.sentido=2;
+  this.tempo=0;
+
+
   this.SIZE = 30;
   this.height = this.SIZE;
   this.width = this.SIZE;
@@ -14,6 +21,8 @@ function Personagem (map){
 
   this.gxT = 7
   this.gyT = 1;
+
+
 }
 
   Personagem.prototype.mover = function (map, dt) {
@@ -29,11 +38,13 @@ function Personagem (map){
     if(map.retornaDistanciaParedeY(this.gy+1,this.gx,this.y,this.SIZE)>3){
       //Movimenta se longe da parede
       this.y =  this.y+this.vy*dt;
+      this.sentido = 2;
     } else {
       //Não faz nada se proximo da parede
     }
   } else if (map.verificaParede(this.gy+1,this.gx)==false && this.vy>0) {
     this.y =  this.y+this.vy*dt;
+    this.sentido = 2;
   }
 
   //Para Movimentação para Cima
@@ -42,11 +53,13 @@ function Personagem (map){
     if(map.retornaDistanciaParedeY(this.gy-1,this.gx,this.y,this.SIZE)>3){
       //Movimenta se longe da parede
       this.y =  this.y+this.vy*dt;
+      this.sentido = 0;
     } else {
       //Não faz nada se proximo da parede
     }
   } else if (map.verificaParede(this.gy-1,this.gx)==false && this.vy<0) {
     this.y =  this.y+this.vy*dt;
+    this.sentido = 0;
   }
 
   //Para Movimentação para Esquerda
@@ -55,11 +68,13 @@ function Personagem (map){
     if(map.retornaDistanciaParedeX(this.gy,this.gx-1,this.x,this.SIZE)>3){
       //Movimenta se longe da parede
       this.x =  this.x + this.vx*dt;
+      this.sentido = 3;
     } else {
       //Não faz nada se proximo da parede
     }
   } else if (map.verificaParede(this.gy,this.gx-1)==false && this.vx<0) {
     this.x =  this.x+this.vx*dt;
+    this.sentido = 3;
   }
 
   //Para Movimentação para Direita
@@ -68,11 +83,13 @@ function Personagem (map){
     if(map.retornaDistanciaParedeX(this.gy,this.gx+1,this.x,this.SIZE)>3){
       //Movimenta se longe da parede
       this.x =  this.x + this.vx*dt;
+      this.sentido = 1;
     } else {
       //Não faz nada se proximo da parede
     }
   } else if (map.verificaParede(this.gy,this.gx+1)==false && this.vx>0) {
     this.x =  this.x+this.vx*dt;
+    this.sentido = 1;
   }
 
 };
@@ -80,8 +97,44 @@ function Personagem (map){
 
 
   Personagem.prototype.desenhar = function (ctx){
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x,this.y,this.width,this.height);
+    this.tempo+=0.05;
+  //  ctx.fillStyle = this.color;
+  //  ctx.fillRect(this.x,this.y,this.width,this.height);
+    if(this.tempo%3<=1){
+      if(this.sentido==0){
+        ctx.drawImage(this.imagem,0+(this.id*72),0,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido==1){
+        ctx.drawImage(this.imagem,0+(this.id*72),24,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido==2){
+        ctx.drawImage(this.imagem,0+(this.id*72),48,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido ==3){
+        ctx.drawImage(this.imagem,0+(this.id*72),72,24,24,this.x,this.y,this.width,this.height);
+      }
+
+    } else if(this.tempo%3<=2){
+      if(this.sentido==0){
+        ctx.drawImage(this.imagem,24+(this.id*72),0,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido==1){
+        ctx.drawImage(this.imagem,24+(this.id*72),24,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido==2){
+        ctx.drawImage(this.imagem,24+(this.id*72),48,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido ==3){
+        ctx.drawImage(this.imagem,24+(this.id*72),72,24,24,this.x,this.y,this.width,this.height);
+      }
+
+
+    } else if(this.tempo%3<=3){
+      if(this.sentido==0){
+        ctx.drawImage(this.imagem,48+(this.id*72),0,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido==1){
+        ctx.drawImage(this.imagem,48+(this.id*72),24,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido==2){
+        ctx.drawImage(this.imagem,48+(this.id*72),48,24,24,this.x,this.y,this.width,this.height);
+      } else if (this.sentido ==3){
+        ctx.drawImage(this.imagem,48+(this.id*72),72,24,24,this.x,this.y,this.width,this.height);
+      }
+
+    }
   };
 
 

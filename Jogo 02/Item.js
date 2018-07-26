@@ -5,6 +5,8 @@ function Item (x,y){
   this.width = 30;
   this.height = 30;
   this.rand = Math.trunc(Math.random()*100);
+  this.imagem = new Image();
+  this.imagem.src = "itens.png";
 
 
   //0 Invencibilidade // 1 ponto //2 dano extra //3 explosao // 4 vida extra
@@ -28,8 +30,20 @@ function Item (x,y){
 }
 
 Item.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
+  //0 Invencibilidade // 1 ponto //2 dano extra //3 explosao // 4 vida extra
+  //ctx.fillStyle = this.color;
+  //ctx.fillRect(this.x,this.y,this.width,this.height);
+  if(this.id==0){
+  ctx.drawImage(this.imagem,48,24,24,24,this.x,this.y,this.width,this.height);
+  } else if  (this.id==1){
+  ctx.drawImage(this.imagem,0,24,24,24,this.x,this.y,this.width,this.height);
+  } else if (this.id==2){
+  ctx.drawImage(this.imagem,24,0,24,24,this.x,this.y,this.width,this.height);
+  } else if (this.id==3){
+  ctx.drawImage(this.imagem,24,24,24,24,this.x,this.y,this.width,this.height);
+  } else if (this.id==4){
+  ctx.drawImage(this.imagem,0,0,24,24,this.x,this.y,this.width,this.height);
+  }
 };
 
 Item.prototype.mover = function (dt) {
@@ -48,4 +62,12 @@ Item.prototype.verificaColisao = function (alvo) {
     return false;
   }
   return false;
+};
+
+Item.prototype.verificaSaidaTela = function () {
+  if(this.y>500){
+    return true;
+  } else {
+    return false;
+  }
 };

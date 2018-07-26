@@ -15,6 +15,9 @@
       var ctx = canvas.getContext("2d");
       var dt = anterior = 0;
 
+      var bg = new Image();
+      bg.src = "bgJogo.png";
+
       var fogueteS = 0;
       var foguete;// = new Foguete();
       var barra = new BarraStatus();
@@ -48,13 +51,19 @@
 
 
         if(cenario == 0){
+          var imagem = new Image();
+          imagem.src = "bg.png";
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
+          ctx.drawImage(imagem,0,0);
+          ctx.strokeStyle = "Black";
+
           ctx.textAlign = "center";
           ctx.font = '70pt Arial';
-          ctx.fillStyle = "wheat";
+          ctx.fillStyle = "orange";
           ctx.fillText("Moon Lander", 350, 150);
+          ctx.strokeText("Moon Lander", 350, 150);
           ctx.font = '20pt Arial';
           ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
 
@@ -62,38 +71,49 @@
 
 
         } else if (cenario == 1){
+          var imagem = new Image();
+          imagem.src = "Nave.png";
+
+
 
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
+          ctx.drawImage(bg,0,0);
+
           ctx.textAlign = "center";
           ctx.font = '50pt Arial';
-          ctx.fillStyle = "wheat";
+          ctx.strokeStyle = "black";
+          ctx.fillStyle = "orange";
+          ctx.strokeText("Selecione a nave", 350, 150);
           ctx.fillText("Selecione a nave", 350, 150);
           ctx.font = '30pt Arial';
           ctx.textAlign = "start";
 
+          ctx.strokeStyle = "white";
           //Naves
           if(fogueteS == 0){
-            ctx.fillStyle = "white";
-            ctx.fillRect(90,290, 50, 50);
+
+            ctx.strokeRect(90,290, 70, 80);
           }  else if(fogueteS==1){
-            ctx.fillStyle = "white";
-            ctx.fillRect(290,290, 50, 50);
+            ctx.strokeRect(290,290, 70, 80);
           }  else if(fogueteS==2){
-            ctx.fillStyle = "white";
-            ctx.fillRect(490,290, 50, 50);
+            ctx.strokeRect(490,290, 70, 80);
           }
 
           ctx.fillStyle = "green";
           ctx.fillText("Verde", 70, 450);
-          ctx.fillRect(100,300, 30, 30);
+          //ctx.fillRect(100,300, 30, 30);
+          ctx.drawImage(imagem,0,0,204,267,100,300,50,60);
+
           ctx.fillStyle = "wheat";
-          ctx.fillText("Areia", 270, 450);
-          ctx.fillRect(300,300, 30, 30);
+          ctx.fillText("Areia", 275, 450);
+          ctx.drawImage(imagem,200,0,204,267,300,300,50,60);
+          //ctx.fillRect(300,300, 30, 30);
           ctx.fillStyle = "teal";
-          ctx.fillText("Teal", 470, 450);
-          ctx.fillRect(500,300, 30, 30);
+          ctx.fillText("Azul", 484, 450);
+          //ctx.fillRect(500,300, 30, 30);
+          ctx.drawImage(imagem,400,0,204,267,500,300,50,60);
 
           requestAnimationFrame(atualizar);
 
@@ -109,6 +129,8 @@
           //Desenhar o fundo
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
+
+          ctx.drawImage(bg,0,0);
 
           //Desenhar o Foguete, Barra e a Base
           foguete.desenhar(ctx);
@@ -253,10 +275,11 @@ addEventListener("keyup", function (e) {
           } else if(cenario==3){
             foguete.vida=3;
             foguete.resetar();
-            fase=1;
+            fase=0;
             pontoAtual=0;
             pontoMax=0;
-              cenario=2;
+            cenario=2;
+            trocaFase(0);
           }
     }
 });

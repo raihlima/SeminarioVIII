@@ -1,4 +1,7 @@
 function Personagem (map){
+  this.imagem = new Image();
+  this.imagem.src = "personagem.png";
+
   this.SIZE = 30;
   this.height = this.SIZE;
   this.width = this.SIZE;
@@ -25,6 +28,11 @@ function Personagem (map){
 
   this.bloqueioEsquerda = false;
   this.bloqueioDireita = false;
+
+  //0 direita /1 esquerda
+  this.sentido = 0;
+
+  this.tempo = 0;
 }
 
   Personagem.prototype.mover = function (map, dt, gravidade,ctx) {
@@ -34,10 +42,6 @@ function Personagem (map){
 
   this.xReal = 280+deslocamento;
 
-  ctx.font = '20pt Arial';
-  ctx.fillText(this.gx, 300, 270);
-  ctx.fillText(this.xReal, 300, 370);
-  ctx.fillText(map.descolamentoX, 300, 470);
 
   this.extraX=this.x;
   //this.vy = this.vy + (gravidade + this.ay+10) * dt;
@@ -105,6 +109,7 @@ function Personagem (map){
     this.bloqueioEsquerda = false;
   }
 */
+/*
   //Para Movimentação para Direita
   if(map.verificaParedeToda(this.gy,this.gx+1,this.gyT,this.gx+1)==true && this.vx>0){
     //Calculador de Distancia
@@ -122,12 +127,41 @@ function Personagem (map){
   }
 //  */
 
+
+  //teste
+  //if(this.gy>14){
+//    this.gy=2;
+//  }
+
 };
 
   Personagem.prototype.desenhar = function (ctx,map){
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.xTravado,this.y,this.width,this.height);
-ctx.fillText(map.retornaDistanciaParedeX(this.gy,this.gx-1,this.xReal,this.SIZE), 300, 121);
+    this.tempo+=0.05;
+    if(this.sentido==0){
+      if(this.tempo%3<=1){
+        ctx.drawImage(this.imagem,72,24,24,24,this.xTravado,this.y+10,this.width,this.height);
+
+      } else if(this.tempo%3<=2){
+          ctx.drawImage(this.imagem,96,24,24,24,this.xTravado,this.y+10,this.width,this.height);
+
+      } else if(this.tempo%3<=3){
+          ctx.drawImage(this.imagem,120,24,24,24,this.xTravado,this.y+10,this.width,this.height);
+
+      }
+
+    } else {
+      if(this.tempo%3<=1){
+        ctx.drawImage(this.imagem,72,72,24,24,this.xTravado,this.y+10,this.width,this.height);
+
+      } else if(this.tempo%3<=2){
+          ctx.drawImage(this.imagem,96,72,24,24,this.xTravado,this.y+10,this.width,this.height);
+
+      } else if(this.tempo%3<=3){
+          ctx.drawImage(this.imagem,120,72,24,24,this.xTravado,this.y+10,this.width,this.height);
+
+      }
+
+    }
   };
 
   Personagem.prototype.verificaMovCima = function (map) {

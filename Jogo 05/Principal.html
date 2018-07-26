@@ -20,6 +20,12 @@
 
   var barra = new BarraStatus();
 
+  var imagem = new Image();
+  imagem.src = "bg.png";
+
+  var tanqueIMG = new Image();
+  tanqueIMG.src = "tanque.png";
+
   //  Tanques
   var tanque1 = 0;
   var tanque2 = 0;
@@ -46,9 +52,12 @@
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
 
+      ctx.drawImage(imagem,0,0);
       ctx.font = '70pt Arial';
-      ctx.fillStyle = "wheat";
+      ctx.strokeStyle = "black";
+      ctx.fillStyle = "white";
       ctx.textAlign = "center";
+      ctx.strokeText("Duelo", 350, 150);
       ctx.fillText("Duelo", 350, 150);
       ctx.font = '20pt Arial';
       ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
@@ -61,7 +70,7 @@
 
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
-
+      ctx.drawImage(imagem,0,0);
       ctx.textAlign = "center";
       ctx.font = '50pt Arial';
       ctx.fillStyle = "wheat";
@@ -71,44 +80,51 @@
       //Seleção do Jogador 1
       ctx.fillText("J1", 233, 150);
 
+      ctx.strokeStyle = "white";
       //Contorno de seleção
       if(tanque1 == 0){
-        ctx.fillStyle = "white";
-        ctx.fillRect(209,190, 50, 50);
+        ctx.strokeRect(209,190, 50, 50);
       }  else if(tanque1==1){
-        ctx.fillStyle = "white";
-        ctx.fillRect(209,330, 50, 50);
+        ctx.strokeRect(209,330, 50, 50);
       }
-
+      ctx.lineWidth=3;
       ctx.font = '25pt Arial';
       ctx.fillStyle = "limeGreen";
       ctx.fillText("Limão", 234, 280);
-      ctx.fillRect(219,200, 30, 30);
+    //  ctx.fillRect(219,200, 30, 30);
       ctx.fillStyle = "green";
       ctx.fillText("Floresta", 234, 420);
-      ctx.fillRect(219,340, 30, 30);
+      //ctx.fillRect(219,340, 30, 30);
+
+      ctx.drawImage(tanqueIMG,0,0,30,30,219,200, 30, 30);
+      ctx.drawImage(tanqueIMG,0,30,30,30,219,340, 30, 30);
 
       //Seleção do Jogador 2
       ctx.font = '30pt Arial';
       ctx.fillStyle = "wheat";
       ctx.fillText("J2", 466, 150);
 
+      ctx.strokeStyle = "white";
       //Contorno de seleção
       if(tanque2 == 0){
-        ctx.fillStyle = "white";
-        ctx.fillRect(442,190, 50, 50);
+        ctx.strokeRect(442,190, 50, 50);
       }  else if(tanque2==1){
-        ctx.fillStyle = "white";
-        ctx.fillRect(442,330, 50, 50);
+        ctx.strokeRect(442,330, 50, 50);
       }
-
+    //  ctx.lineWidth=1;
       ctx.font = '25pt Arial';
       ctx.fillStyle = "SteelBlue";
+
+    //  ctx.strokeText("Aço", 466, 280);
       ctx.fillText("Aço", 466, 280);
-      ctx.fillRect(452,200, 30, 30);
+      //ctx.fillRect(452,200, 30, 30);
       ctx.fillStyle = "Navy";
+    //ctx.strokeText("Marinho", 466, 420);
       ctx.fillText("Marinho", 466, 420);
-      ctx.fillRect(452,340, 30, 30);
+      //ctx.fillRect(452,340, 30, 30);
+
+      ctx.drawImage(tanqueIMG,0,60,30,30,452,200, 30, 30);
+      ctx.drawImage(tanqueIMG,0,90,30,30,452,340, 30, 30);
 
       if(tanque1Pronto==true && tanque2Pronto == true){
         tanque1 = new Tanque (tanque1);
@@ -120,6 +136,9 @@
     }
     else if (cenario == 2){
       dt = (t - anterior)/1000;
+
+      var bg = new Image();
+      bg.src = "bgJogo.png";
 
       //criar as barreiras
       if(barreira.length==0){
@@ -133,7 +152,7 @@
       //Desenhar o fundo
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
-
+      ctx.drawImage(bg,0,0);
       //Desenhar os tanques
       tanque1.desenhar(ctx);
       tanque2.desenhar(ctx);
@@ -217,6 +236,7 @@
       ctx.textAlign = "center";
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
+            ctx.drawImage(imagem,0,0);
       ctx.strokeStyle="black";
       ctx.fillStyle = 'white';
       ctx.font = '40pt Arial';

@@ -6,8 +6,10 @@ function Personagem(cor){
   this.ax = 0;
   this.ay = 0;
   this.width = 30;
-  this.height = 30;
+  this.height = 40;
   this.vida=1;
+  this.imagem = new Image();
+  this.imagem.src = "balao.png";
   //Seleção de color
   if(cor==0){
     this.color = "green";
@@ -27,13 +29,20 @@ Personagem.prototype.resetar = function () {
   this.ax = 0;
   this.ay = 0;
   this.width = 30;
-  this.height = 30;
+  this.height = 40;
   this.vida=1;
 };
 
 Personagem.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
+//  ctx.fillStyle = this.color;
+  //ctx.fillRect(this.x,this.y,this.width,this.height);
+  if(this.color == "green"){
+    ctx.drawImage(this.imagem,0,0,30,40,this.x,this.y,this.width,this.height);
+  } else if(this.color == "wheat"){
+    ctx.drawImage(this.imagem,30,0,30,40,this.x,this.y,this.width,this.height);
+  } else if(this.color =="Teal"){
+    ctx.drawImage(this.imagem,60,0,30,40,this.x,this.y,this.width,this.height);
+  }
   //ctx.strokeStyle = "white";
 };
 

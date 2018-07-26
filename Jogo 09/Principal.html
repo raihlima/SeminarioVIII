@@ -15,6 +15,9 @@
       var canvas = document.getElementsByTagName("canvas")[0];
       var ctx = canvas.getContext("2d");
 
+      var imagem = new Image();
+      imagem.src = "caverna.png";
+
       var dt = anterior = 0;
       var tempo = 90;
       var gravidade = 150;
@@ -49,6 +52,8 @@
           ctx.fillStyle = "white";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
+          ctx.drawImage(imagem,0,0);
+
           dt = (t - anterior)/1000;
           mapa.desenhar(ctx,dt,personagem);
 
@@ -74,11 +79,11 @@
           //Desenha a barra de status
           barra.desenhar(ctx, tempo, personagem.itens);
           //Mudanças de variaveis globais
-          tempo-=0.01;
+          tempo-=0.015;
           if(tempo<0){
             cenario=3;
           }
-          if(personagem.itens>10){
+          if(personagem.itens>11){
             vitoria=true;
             cenario=3;
           }
@@ -134,6 +139,7 @@
 
             personagem.vx = +150;
             mapa.vx=+150;
+            personagem.sentido=1;
 
           //personagem.vx = +150;
           //mapa.vx=+150;
@@ -142,6 +148,7 @@
           if(personagem.bloqueioDireita==false){
             personagem.vx = -150;
             mapa.vx=-150;
+            personagem.sentido=0;
 
           }
 

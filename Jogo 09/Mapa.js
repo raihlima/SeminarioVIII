@@ -8,6 +8,18 @@ function Mapa(rows, columns, id) {
 
   this.cells = [];
 
+  //imagens
+  this.terra = new Image();
+  this.terra.src="terra.png";
+
+  this.espinho = new Image();
+  this.espinho.src = "espinho.png";
+
+  this.moeda = new Image();
+  this.moeda.src = "moeda.png";
+  this.item = new Image();
+  this.item.src = "itens.png";
+
   //Mapa Inicial
     //0 Parede / 1 chão /2 Tempo Extra /3 item /4 Espinho
   if(id==0){
@@ -50,20 +62,26 @@ Mapa.prototype.desenhar = function (ctx,dt,personagem) {
   for (var r = 0; r < this.cells.length; r++) {
     for (var c = 0; c < this.cells[0].length; c++) {
       if(this.cells[r][c]==0){
-        ctx.fillStyle = "tan";
-        ctx.fillRect(c*this.SIZE + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+      //  ctx.fillStyle = "tan";
+      //  ctx.fillRect(c*this.SIZE + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.terra,0,0,100,100,c*this.SIZE + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==1){
-        ctx.fillStyle = "darkgray";
-        ctx.fillRect(c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+        //ctx.fillStyle = "darkgray";
+        //ctx.fillRect(c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==2){
-        ctx.fillStyle = "white";
-        ctx.fillRect(c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+        //ctx.fillStyle = "white";
+        //ctx.fillRect(c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.item,0,24,24,24,c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+
       } else if(this.cells[r][c]==3){
-        ctx.fillStyle = "yellow";
-        ctx.fillRect(c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+      //  ctx.fillStyle = "yellow";
+        //ctx.fillRect(c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.moeda,0,0,150,150,c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+
       } else if(this.cells[r][c]==4){
         ctx.fillStyle = "black";
         ctx.fillRect(c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.espinho,0,0,150,150,c*this.SIZE  + this.descolamentoX, r*this.SIZE, this.SIZE, this.SIZE);
       }
     }
   }
@@ -87,6 +105,10 @@ Mapa.prototype.verificaParedeToda = function (r,c, rT, cT) {
     return true;
   }
   */
+  if(r<0 || c<0){
+    return true;
+  }
+
   if(this.cells[r][c]!=0 && this.cells[rT][cT]!=0){
     return false;
   } else {

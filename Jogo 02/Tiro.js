@@ -1,4 +1,7 @@
 function Tiro (sentido, atirador, qtd){
+  this.imagem = new Image();
+  this.imagem.src = "tiro.png";
+  this.sentido = sentido;
   if(qtd==0){
     this.x = atirador.x+(atirador.width/2)-2.5;
     this.height = 10;
@@ -30,8 +33,13 @@ function Tiro (sentido, atirador, qtd){
 }
 
 Tiro.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
+  //ctx.fillStyle = this.color;
+//  ctx.fillRect(this.x,this.y,this.width,this.height);
+  if(this.color=="blue"){
+    ctx.drawImage(this.imagem,0,0,30,50,this.x,this.y,this.width,this.height);
+  } else {
+    ctx.drawImage(this.imagem,30,0,30,65,this.x,this.y,this.width,this.height);
+  }
 };
 
 Tiro.prototype.atualizar = function (dt) {

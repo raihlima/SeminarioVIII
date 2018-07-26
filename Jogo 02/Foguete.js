@@ -5,11 +5,13 @@ function Foguete(cor){
   this.vy = 0;
   this.ax = 0;
   this.ay = 0;
-  this.width = 30;
-  this.height = 30;
+  this.width = 50;
+  this.height = 50;
   this.energia = 100;
   this.vida=3;
   this.quantidadeTiro = 1;
+  this.nave = new Image();
+  this.nave.src = "foguetes.png";
 
   //Seleção de color
   if(cor==0){
@@ -43,15 +45,21 @@ Foguete.prototype.resetar = function () {
   this.vy = 0;
   this.ax = 0;
   this.ay = 0;
-  this.width = 30;
-  this.height = 30;
+  this.width = 50;
+  this.height = 50;
   this.energia = 100;
 };
 
 Foguete.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
-  //ctx.strokeStyle = "white";
+  //ctx.fillStyle = this.color;
+  //ctx.fillRect(this.x,this.y,this.width,this.height);
+  if(this.color == "green"){
+    ctx.drawImage(this.nave,0,0,150,150,this.x,this.y,this.width,this.height);
+  } else if(this.color == "wheat"){
+    ctx.drawImage(this.nave,150,0,150,150,this.x,this.y,this.width,this.height);
+  } else if(this.color == "Teal"){
+    ctx.drawImage(this.nave,300,0,150,150,this.x,this.y,this.width,this.height);
+  }
 };
 
 
@@ -63,8 +71,8 @@ Foguete.prototype.atualizar = function (dt) {
   if(this.x<0){
     this.x=0;
     this.vx=0;
-  } else if(this.x>669){
-    this.x=669;
+  } else if(this.x>649){
+    this.x=649;
         this.vx=0;
   } else {
     this.x = this.x + this.vx * dt;
@@ -74,8 +82,8 @@ Foguete.prototype.atualizar = function (dt) {
     this.y=30;
     this.vy=0;
   }
-  if(this.y>470){
-    this.y=470;
+  if(this.y>450){
+    this.y=450;
   }
 };
 

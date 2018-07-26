@@ -1,4 +1,6 @@
 function Asteroide(velocidade){
+  this.imagem = new Image();
+  this.imagem.src = "cometa.png";
   this.x = Math.floor(Math.random() * 700);
   this.y = 0;
   this.vx =Math.floor(Math.random() * 300)-150;
@@ -11,8 +13,9 @@ function Asteroide(velocidade){
 }
 
 Asteroide.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
+  //ctx.fillStyle = this.color;
+  //ctx.fillRect(this.x,this.y,this.width,this.height);
+  ctx.drawImage(this.imagem,0,0,500,500,this.x,this.y,this.width,this.height);
 };
 
 Asteroide.prototype.movimento = function (dt) {

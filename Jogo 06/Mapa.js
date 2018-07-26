@@ -1,4 +1,10 @@
 function Mapa(rows, columns) {
+  this.pedra = new Image();
+  this.pedra.src = "pedra.png";
+  this.agua = new Image();
+  this.agua.src = "agua.png";
+  this.nevoa = new Image();
+  this.nevoa.src = "nevoa.png";
   this.rows = rows;
   this.columns = columns;
   this.SIZE = 40;
@@ -45,18 +51,23 @@ Mapa.prototype.desenhar = function (ctx) {
       if(this.cells[r][c]==0){
         ctx.fillStyle = "green";
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.pedra,0,0,175,175,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==1){
         ctx.fillStyle = "darkgray";
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.agua,0,0,128,128,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==2){
         ctx.fillStyle = "gray";
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.nevoa,0,0,175,175,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==3){
         ctx.fillStyle = "gray";
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.nevoa,0,0,175,175,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==4){
         ctx.fillStyle = "gray";
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.nevoa,0,0,175,175,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       }
     }
   }

@@ -1,4 +1,13 @@
 function Bomba (gx,gy,map,tamanho,tempo){
+  this.imagem = new Image();
+  this.imagem.src = "bomba.png";
+
+  this.chao = new Image();
+  this.chao.src = "chao.png";
+
+  this.explosao = new Image();
+  this.explosao.src = "explosao.png";
+
   this.tamanho = tamanho;
   this.gx = gx;
   this.gy = gy;
@@ -10,6 +19,7 @@ function Bomba (gx,gy,map,tamanho,tempo){
   this.color = "red";
   this.ativo = true;
   this.fragmentos = [];
+  map.cells[gy][gx]=6;
 //  this.preencherFragmentos(mapa);
 }
 
@@ -25,12 +35,26 @@ function Fragmento (gy,gx){
 
 Bomba.prototype.desenhar = function (ctx) {
   if(this.ativo==true){
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x,this.y,this.width,this.height);
+    //ctx.fillStyle = this.color;
+    //ctx.fillRect(this.x,this.y,this.width,this.height);
+    ctx.drawImage(this.chao,0,0,150,150,this.x,this.y,this.width,this.height);
+    if(this.tempo<10){
+      ctx.drawImage(this.imagem,0,0,250,250,this.x,this.y,this.width,this.height);
+
+    }
     this.tempo+=this.velocidadeDetonacao;
     for(var i=0;i<this.fragmentos.length;i++){
-      ctx.fillStyle = this.fragmentos[i].color;
-      ctx.fillRect(this.fragmentos[i].x,this.fragmentos[i].y,this.fragmentos[i].width,this.fragmentos[i].height);
+      //ctx.drawImage(this.chao,0,0,150,150,this.x,this.y,this.width,this.height);
+      //ctx.fillStyle = this.fragmentos[i].color;
+      //ctx.fillRect(this.fragmentos[i].x,this.fragmentos[i].y,this.fragmentos[i].width,this.fragmentos[i].height);
+      if(this.tempo<=11 || this.tempo>=14){
+        ctx.drawImage(this.explosao,0,0,100,100,this.fragmentos[i].x,this.fragmentos[i].y,this.fragmentos[i].width,this.fragmentos[i].height);
+      } else if (this.tempo<=12 || this.tempo>=13){
+        ctx.drawImage(this.explosao,100,0,100,100,this.fragmentos[i].x,this.fragmentos[i].y,this.fragmentos[i].width,this.fragmentos[i].height);
+      } else {
+        ctx.drawImage(this.explosao,200,0,100,100,this.fragmentos[i].x,this.fragmentos[i].y,this.fragmentos[i].width,this.fragmentos[i].height);
+
+      }
     }
   }
 };

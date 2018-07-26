@@ -15,6 +15,9 @@
       var ctx = canvas.getContext("2d");
       var dt = anterior = 0;
 
+      var imagem = new Image();
+      imagem.src = "bgJogo.png";
+
       var personagem =  0;
       var barra = new BarraStatus();
       var inimigo = [];
@@ -38,58 +41,77 @@
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
+          ctx.drawImage(imagem,0,0);
+
           ctx.textAlign = "center";
           ctx.font = '70pt Arial';
           ctx.fillStyle = "wheat";
-          ctx.fillText("Flappy", 350, 150);
+          ctx.strokeStyle = "black";
+          //ctx.strokeText("Fuga do Balão", 350, 150);
+          ctx.fillText("Fuga do Balão", 350, 150);
+          ctx.strokeText("Fuga do Balão", 350, 150);
           ctx.font = '20pt Arial';
+          ctx.strokeText("Pressione qualquer tecla para continuar", 350, 470);
+
           ctx.fillText("Pressione qualquer tecla para continuar", 350, 470);
 
           requestAnimationFrame(atualizar);
 
 
         } else if (cenario == 1){
+          var balao = new Image();
+          balao.src = "balao.png";
 
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
+          ctx.drawImage(imagem,0,0);
 
           ctx.textAlign = "center";
           ctx.font = '40pt Arial';
           ctx.fillStyle = "wheat";
+          ctx.strokeStyle="black";
+          ctx.strokeText("Selecione o personagem", 350, 150);
           ctx.fillText("Selecione o personagem", 350, 150);
           ctx.font = '30pt Arial';
 
           ctx.textAlign = "start";
+          ctx.fillStyle = "gray";
           //Naves
           if(personagem == 0){
-            ctx.fillStyle = "white";
-            ctx.fillRect(90,290, 50, 50);
+
+            ctx.strokeRect(90,290, 50, 60);
           }  else if(personagem == 1){
-            ctx.fillStyle = "white";
-            ctx.fillRect(290,290, 50, 50);
+
+            ctx.strokeRect(290,290, 50, 60);
           }  else if(personagem == 2){
-            ctx.fillStyle = "white";
-            ctx.fillRect(490,290, 50, 50);
+
+            ctx.strokeRect(490,290, 50, 60);
           }
 
           ctx.fillStyle = "green";
           ctx.fillText("Verde", 70, 450);
-          ctx.fillRect(100,300, 30, 30);
+          //ctx.fillRect(100,300, 30, 30);
+          ctx.drawImage(balao,0,0,30,40,100,300,30,40);
           ctx.fillStyle = "wheat";
           ctx.fillText("Areia", 270, 450);
-          ctx.fillRect(300,300, 30, 30);
+          //ctx.fillRect(300,300, 30, 30);
+          ctx.drawImage(balao,30,0,30,40,300,300,30,40);
+
           ctx.fillStyle = "teal";
           ctx.fillText("Teal", 470, 450);
-          ctx.fillRect(500,300, 30, 30);
+          //ctx.fillRect(500,300, 30, 30);
+          ctx.drawImage(balao,60,0,30,40,500,300,30,40);
+
 
           requestAnimationFrame(atualizar);
 
         } else if (cenario == 2){
+          ctx.drawImage(imagem,0,0);
           dt = (t - anterior)/1000;
           ctx.textAlign = "start";
           //Desenhar o fundo
-          ctx.fillStyle = "black";
-          ctx.fillRect(0,0, canvas.width, canvas.height);
+          //ctx.fillStyle = "black";
+        //  ctx.fillRect(0,0, canvas.width, canvas.height);
 
           //Desenhar o personagem, Barra e a Base
           personagem.desenhar(ctx);

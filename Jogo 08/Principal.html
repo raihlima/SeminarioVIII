@@ -15,6 +15,9 @@
   var canvas = document.getElementsByTagName("canvas")[0];
   var ctx = canvas.getContext("2d");
 
+  var bg = new Image();
+  bg.src = "bg.png";
+
   var dt = anterior = 0;
 
   var mapa = new Mapa (13,19);
@@ -27,13 +30,13 @@
   var bomba2 = [];
 
 
-  var cenario = 2;
+  var cenario = 0;
 
   function atualizar (t){
     if(cenario == 0){
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "white";
       ctx.fillRect(0,0, canvas.width, canvas.height);
-
+      ctx.drawImage(bg,0,0);
       ctx.font = '70pt Arial';
       ctx.fillStyle = "wheat";
       ctx.textAlign = "center";
@@ -43,15 +46,11 @@
 
       requestAnimationFrame(atualizar);
     } else if (cenario ==2){
+      ctx.fillStyle = "white";
+      ctx.fillRect(0,0, canvas.width, canvas.height);
 
       dt = (t - anterior)/1000;
       mapa.desenhar(ctx);
-
-      personagem.desenhar(ctx);
-      personagem.mover(mapa,dt);
-
-      personagem2.desenhar(ctx);
-      personagem2.mover(mapa,dt);
 
       //Desenha as bombas
 
@@ -59,20 +58,22 @@
         bomba1[i].desenhar(ctx);
         bomba1[i].explode(ctx,mapa);
         if(bomba1[i].color=="yellow"){
+          mapa.cells[bomba1[i].gy][bomba1[i].gx]=1;
           bomba1.splice(i,1);
           break;
         }
-        ctx.fillText(bomba1.length, 350, 470);
+        //ctx.fillText(bomba1.length, 350, 470);
       }
 
       for(var i=0;i< bomba2.length;i++){
         bomba2[i].desenhar(ctx);
         bomba2[i].explode(ctx,mapa);
         if(bomba2[i].color=="yellow"){
+          mapa.cells[bomba2[i].gy][bomba2[i].gx]=1;
           bomba2.splice(i,1);
           break;
         }
-        ctx.fillText(bomba2.length, 350, 470);
+        //ctx.fillText(bomba2.length, 350, 470);
       }
 
       //Confere Adição de Especiais
@@ -125,6 +126,11 @@
           }
         }
       }
+      personagem.desenhar(ctx);
+      personagem.mover(mapa,dt);
+
+      personagem2.desenhar(ctx);
+      personagem2.mover(mapa,dt);
 
       //condição de game over
       if(personagem.vida<1 || personagem2.vida<1){
@@ -141,6 +147,7 @@
       ctx.textAlign = "center";
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
+        ctx.drawImage(bg,0,0);
       ctx.strokeStyle="black";
       ctx.fillStyle = 'white';
       ctx.font = '40pt Arial';
@@ -173,15 +180,22 @@
   addEventListener("keydown", function (e) {
     switch (e.keyCode) {
       case 13://Enter
-      if(bomba1.length<personagem.limiteBomba){
-        bomba1.push(new Bomba(personagem.gx, personagem.gy, mapa, personagem.tamanhoBomba, personagem.velocidadeDetonacao));
-        break;
+      if(cenario==2){
+        if(bomba1.length<personagem.limiteBomba){
+          bomba1.push(new Bomba(personagem.gx, personagem.gy, mapa, personagem.tamanhoBomba, personagem.velocidadeDetonacao));
+          break;
+        }
+
       }
+      break;
 
       case 32://Espaço
+      if(cenario==2){
+        if(bomba2.length<personagem2.limiteBomba){
+          bomba2.push(new Bomba(personagem2.gx, personagem2.gy, mapa, personagem2.tamanhoBomba, personagem2.velocidadeDetonacao));
 
-      if(bomba2.length<personagem2.limiteBomba){
-        bomba2.push(new Bomba(personagem2.gx, personagem2.gy, mapa, personagem2.tamanhoBomba, personagem2.velocidadeDetonacao));
+      }
+        //mapa.cells[personagem2.gy][personagem2.gx]=6;
       }
       break;
       case 37: //Botão Esquerdo
@@ -240,7 +254,8 @@
 
       default:
       if(cenario==0){
-        cenario=1;
+        cenario=2;
+        break;
       }
 
     }});
@@ -271,6 +286,10 @@
         case 87: // Botao W// Cima
         break;
         default:
+        if(cenario==0){
+        cenario=2;
+        break;
+        }
       }
     });
 

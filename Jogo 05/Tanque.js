@@ -1,4 +1,6 @@
 function Tanque(cor){
+  this.imagem = new Image();
+  this.imagem.src = "tanque.png";
 
   this.id=cor;
 
@@ -22,7 +24,7 @@ function Tanque(cor){
   if(cor==0){
     this.x = 80;
     this.y = 80;
-    this.color = "limeGreen";
+    this.color = "lime";
     this.corOriginal=this.color;
   } else if(cor==1){
     this.x = 80;
@@ -82,8 +84,68 @@ Tanque.prototype.resetarPosição = function () {
 
 Tanque.prototype.desenhar = function (ctx) {
   ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
+//  ctx.fillRect(this.x,this.y,this.width,this.height);
   //ctx.strokeStyle = "white";
+  if(this.color=="lime"){
+    if(this.sentido==0){
+      ctx.drawImage(this.imagem,0,0,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==1){
+      ctx.drawImage(this.imagem,60,0,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==2){
+      ctx.drawImage(this.imagem,30,0,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==3){
+      ctx.drawImage(this.imagem,90,0,30,30,this.x,this.y,this.width,this.height);
+
+    }
+  } else if(this.color=="green"){
+    if(this.sentido==0){
+      ctx.drawImage(this.imagem,0,30,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==1){
+      ctx.drawImage(this.imagem,60,30,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==2){
+      ctx.drawImage(this.imagem,30,30,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==3){
+      ctx.drawImage(this.imagem,90,30,30,30,this.x,this.y,this.width,this.height);
+
+    }
+
+  } else if(this.color=="SteelBlue"){
+    if(this.sentido==0){
+      ctx.drawImage(this.imagem,0,60,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==1){
+      ctx.drawImage(this.imagem,60,60,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==2){
+      ctx.drawImage(this.imagem,30,60,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==3){
+      ctx.drawImage(this.imagem,90,60,30,30,this.x,this.y,this.width,this.height);
+
+    }
+
+  } else if(this.color=="Navy"){
+    if(this.sentido==0){
+      ctx.drawImage(this.imagem,0,90,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==1){
+      ctx.drawImage(this.imagem,60,90,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==2){
+      ctx.drawImage(this.imagem,30,90,30,30,this.x,this.y,this.width,this.height);
+
+    } else if(this.sentido==3){
+      ctx.drawImage(this.imagem,90,90,30,30,this.x,this.y,this.width,this.height);
+
+    }
+
+  }
 };
 
 

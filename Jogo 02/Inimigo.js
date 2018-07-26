@@ -3,17 +3,21 @@ function Inimigo(ponto){
   this.y = 10;
   this.vx = (Math.random() * 2-1)* 100;
   this.vy = 90;
-  this.width = 30;
-  this.height = 30;
+  this.width = 50;
+  this.height = 50;
   this.color = "red";
   this.energia = 2+ponto;
   this.cadencia = 2;
+  this.nave = new Image();
+  this.nave.src = "inimigo.png";
+
 }
 
 Inimigo.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x,this.y,this.width,this.height);
-  ctx.strokeStyle = "white";
+  //ctx.fillStyle = this.color;
+  //ctx.fillRect(this.x,this.y,this.width,this.height);
+  //ctx.strokeStyle = "white";
+    ctx.drawImage(this.nave,0,0,150,150,this.x,this.y,this.width,this.height);
 
   //tiro
   if(this.cadencia<2){

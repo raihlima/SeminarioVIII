@@ -1,4 +1,8 @@
 function Canhao(cor){
+  this.imagem = new Image();
+  this.imagem.src = "canhao.png";
+  this.torre = new Image();
+  this.torre.src = "torre.png";
   this.x = 330;
   this.y = 400;
   this.vx = 0;
@@ -51,13 +55,16 @@ Canhao.prototype.resetar = function () {
 };
 
 Canhao.prototype.desenhar = function (ctx) {
+  ctx.drawImage(this.torre,0,0,30,70,this.x,this.y+  10,30,70);
   this.angulo = this.angulo + this.aceleracaoAngular;
 
-  ctx.fillStyle = this.color;
+  ctx.fillStyle = "red";
   ctx.translate(this.tX, this.tY);
+//  ctx.fillRect(this.x,this.y,50,50);
   ctx.rotate((Math.PI / 180)* this.angulo); //this.vAng)); // rotate
   ctx.translate(this.tX*(-1), this.tY*(-1));
-  ctx.fillRect(this.x,this.y,this.width,this.height);
+
+  ctx.drawImage(this.imagem,0,0,30,30,this.x,this.y,this.width,this.height);
   //ctx.strokeStyle = "white";
 };
 

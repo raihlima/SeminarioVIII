@@ -1,4 +1,6 @@
 function Personagem (x,mapa){
+  this.imagem = new Image();
+  this.imagem.src = "personagem.png";
   this.height = 40;
   this.width = 40;
   this.SIZE = 40;
@@ -60,6 +62,11 @@ Personagem.prototype.moverNoMapa = function (map, dt) {
 
 
   Personagem.prototype.desenhar = function (ctx){
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x,this.y,this.width,this.height);
+    //ctx.fillStyle = this.color;
+    //ctx.fillRect(this.x,this.y,this.width,this.height);
+    if(this.color=="blue"){
+      ctx.drawImage(this.imagem,48,0,48,48,this.x,this.y,this.width,this.height);
+    } else {
+      ctx.drawImage(this.imagem,0,0,48,48,this.x,this.y,this.width,this.height);
+    }
   };

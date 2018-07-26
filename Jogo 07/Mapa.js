@@ -6,6 +6,28 @@ function Mapa(rows, columns,id) {
 
   this.cells = [];
 
+  //imagens
+  this.parede = new Image();
+  this.parede.src = "parede.png";
+
+  this.chao = new Image();
+  this.chao.src = "chao.png";
+
+  this.chaoQuente = new Image();
+  this.chaoQuente.src = "chaoQuente.png";
+
+  this.chaoGelado = new Image();
+  this.chaoGelado.src = "chaoGelado.png";
+
+  this.moeda = new Image();
+  this.moeda.src = "moeda.png";
+
+  this.comida = new Image();
+  this.comida.src = "comida.png";
+
+  this.escada = new Image();
+  this.escada.src = "escada.png";
+
   //Mapa Inicial
     //0 Parede / 1 chão / 2 comida /3 item /4 Andar baixo /5 Andar cima //6 Lama // 7 calor
   if(id==0){
@@ -196,29 +218,31 @@ Mapa.prototype.desenhar = function (ctx) {
   for (var r = 0; r < this.cells.length; r++) {
     for (var c = 0; c < this.cells[0].length; c++) {
       if(this.cells[r][c]==0){
-        ctx.fillStyle = "tan";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+
+        ctx.drawImage(this.parede,0,0,180,180,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==1){
-        ctx.fillStyle = "darkgray";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+
+        ctx.drawImage(this.chao,0,0,180,180,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==2){
-        ctx.fillStyle = "white";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+
+        ctx.drawImage(this.chao,0,0,180,180,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.comida,0,0,33,30,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==3){
-        ctx.fillStyle = "yellow";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+
+        ctx.drawImage(this.chao,0,0,180,180,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.moeda,0,0,150,150,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==4){
-        ctx.fillStyle = "black";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+
+        ctx.drawImage(this.escada,0,48,48,48,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==5){
-        ctx.fillStyle = "blue";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.chao,0,0,180,180,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.drawImage(this.escada,0,0,48,48,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==6){
-        ctx.fillStyle = "SaddleBrown";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+
+        ctx.drawImage(this.chaoGelado,0,0,180,180,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       } else if(this.cells[r][c]==7){
-        ctx.fillStyle = "DarkOrange";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+
+        ctx.drawImage(this.chaoQuente,0,0,180,180,c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       }
     }
   }

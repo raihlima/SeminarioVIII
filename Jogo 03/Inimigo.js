@@ -1,4 +1,7 @@
 function Inimigo(numero,pos){
+  this.imagem = new Image();
+  this.imagem.src = "cacto.png";
+
   //Inimigo 1
   this.id = numero;
   this.x1 = 700 + (numero*200);
@@ -14,14 +17,17 @@ function Inimigo(numero,pos){
   this.width2 = 50;
   this.height2 = 500;
 
+
+
 }
 
 Inimigo.prototype.desenhar = function (ctx) {
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x1,this.y1,this.width1,this.height1);
-
-  ctx.fillRect(this.x2,this.y2,this.width2,this.height2);
-  ctx.strokeStyle = "white";
+//  ctx.fillStyle = this.color;
+  //ctx.fillRect(this.x1,this.y1,this.width1,this.height1);
+  ctx.drawImage(this.imagem,0,350-this.height1,50,this.sobra,this.x1,this.y1,this.width1,this.height1);
+//  ctx.fillRect(this.x2,this.y2,this.width2,this.height2);
+//  ctx.strokeStyle = "white";
+  ctx.drawImage(this.imagem,0,1,50,this.height2,this.x2,this.y2,this.width2,this.height2);
 };
 
 Inimigo.prototype.atualizar = function (ctx){
