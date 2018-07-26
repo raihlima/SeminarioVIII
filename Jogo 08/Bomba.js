@@ -63,6 +63,8 @@ Bomba.prototype.explode = function (ctx,map) {
   if(this.tempo>10 && this.tempo <14){
     this.color = "purple";
     if(this.fragmentos.length==0){
+      var somExplosao = new Audio();
+      somExplosao.src = "Som/Explosao.m4a";
       //this.explosaoLateral(ctx,map);
       this.preencherFragmentos(map);
     }
@@ -90,10 +92,13 @@ Bomba.prototype.explosaoLateral = function (ctx,map) {
 
 Bomba.prototype.preencherFragmentos = function(map){
   //GX positivo
+  var somBloco = new Audio();
+  somBloco.src = "Som/Bloco.m4a";
   for(var i=0;i<=this.tamanho;i++){
     if(map.verificaParede(this.gy,this.gx+i)==true){
       break;
     } if(map.verificaCaixa(this.gy,this.gx+i)==true){
+      somBloco.play();
       map.destroiCaixa(this.gy,this.gx+i);
       break;
     }
@@ -104,6 +109,7 @@ Bomba.prototype.preencherFragmentos = function(map){
     if(map.verificaParede(this.gy,this.gx-i)==true){
       break;
     } if(map.verificaCaixa(this.gy,this.gx-i)==true){
+      somBloco.play();
       map.destroiCaixa(this.gy,this.gx-i);
       break;
     }
@@ -114,6 +120,7 @@ Bomba.prototype.preencherFragmentos = function(map){
     if(map.verificaParede(this.gy+i,this.gx)==true){
       break;
     } if(map.verificaCaixa(this.gy+i,this.gx)==true){
+      somBloco.play();
       map.destroiCaixa(this.gy+i,this.gx);
       break;
     }
@@ -124,6 +131,7 @@ Bomba.prototype.preencherFragmentos = function(map){
     if(map.verificaParede(this.gy-i,this.gx)==true){
       break;
     } if(map.verificaCaixa(this.gy-i,this.gx)==true){
+      somBloco.play();
       map.destroiCaixa(this.gy-i,this.gx);
       break;
     }

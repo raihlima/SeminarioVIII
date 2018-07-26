@@ -11,6 +11,24 @@
   <h1>Jogo 08</h1>
   <canvas id="canvas" width="760" height="550"></canvas>
   <script>
+  //Audio
+  var somIni = new Audio();
+  somIni.src = "Som/Inicio.m4a";
+
+  var somFim = new Audio();
+  somFim.src = "Som/Fim.m4a";
+
+  var somExplosao = new Audio();
+  somExplosao.src = "Som/Explosao.m4a";
+
+  var somAcender = new Audio();
+  somAcender.src = "Som/Acender.m4a";
+
+  var somItem = new Audio();
+  somItem.src = "Som/Item.m4a";
+
+  var somBloco = new Audio();
+  somBloco.src = "Som/Bloco.m4a";
 
   var canvas = document.getElementsByTagName("canvas")[0];
   var ctx = canvas.getContext("2d");
@@ -34,6 +52,7 @@
 
   function atualizar (t){
     if(cenario == 0){
+      somIni.play();
       ctx.fillStyle = "white";
       ctx.fillRect(0,0, canvas.width, canvas.height);
       ctx.drawImage(bg,0,0);
@@ -46,6 +65,8 @@
 
       requestAnimationFrame(atualizar);
     } else if (cenario ==2){
+      somIni.play();
+
       ctx.fillStyle = "white";
       ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -81,28 +102,40 @@
       if(mapa.verificaBombaExtra(personagem.gy,personagem.gx)==true){
         personagem.limiteBomba+=1;
         mapa.cells[personagem.gy][personagem.gx] = 1;
+        somItem.load();
+        somItem.play();
       }
       if(mapa.verificaTamanhoBomba(personagem.gy,personagem.gx)==true){
         personagem.tamanhoBomba+=1;
         mapa.cells[personagem.gy][personagem.gx] = 1;
+        somItem.load();
+        somItem.play();
       }
       if(mapa.verificaVelocidadeDetonacao(personagem.gy,personagem.gx)==true){
         personagem.velocidadeDetonacao+=1;
         mapa.cells[personagem.gy][personagem.gx] = 1;
+        somItem.load();
+        somItem.play();
       }
 
       //Jogador 2
       if(mapa.verificaBombaExtra(personagem2.gy,personagem2.gx)==true){
         personagem2.limiteBomba+=1;
         mapa.cells[personagem2.gy][personagem2.gx] = 1;
+        somItem.load();
+        somItem.play();
       }
       if(mapa.verificaTamanhoBomba(personagem2.gy,personagem2.gx)==true){
         personagem2.tamanhoBomba+=1;
         mapa.cells[personagem2.gy][personagem2.gx] = 1;
+        somItem.load();
+        somItem.play();
       }
       if(mapa.verificaVelocidadeDetonacao(personagem2.gy,personagem2.gx)==true){
         personagem2.velocidadeDetonacao+=1;
         mapa.cells[personagem2.gy][personagem2.gx] = 1;
+        somItem.load();
+        somItem.play();
       }
 
       //verifica morte com a bomba
@@ -135,6 +168,7 @@
       //condição de game over
       if(personagem.vida<1 || personagem2.vida<1){
         cenario =3;
+        somFim.play();
       }
 
 
@@ -142,6 +176,7 @@
       anterior = t;
       requestAnimationFrame(atualizar);
     } else if(cenario == 3){
+      somFim.pause();
 
       //Tela final
       ctx.textAlign = "center";
@@ -182,6 +217,8 @@
       case 13://Enter
       if(cenario==2){
         if(bomba1.length<personagem.limiteBomba){
+          somAcender.load();
+          somAcender.play();
           bomba1.push(new Bomba(personagem.gx, personagem.gy, mapa, personagem.tamanhoBomba, personagem.velocidadeDetonacao));
           break;
         }
@@ -192,6 +229,8 @@
       case 32://Espaço
       if(cenario==2){
         if(bomba2.length<personagem2.limiteBomba){
+          somAcender.load();
+          somAcender.play();
           bomba2.push(new Bomba(personagem2.gx, personagem2.gy, mapa, personagem2.tamanhoBomba, personagem2.velocidadeDetonacao));
 
       }
@@ -288,6 +327,8 @@
         default:
         if(cenario==0){
         cenario=2;
+        somFim.pause();
+        somIni.load();
         break;
         }
       }
