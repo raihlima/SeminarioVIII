@@ -11,7 +11,29 @@
     <h1>Jogo 09</h1>
     <canvas id="canvas" width="600" height="530"></canvas>
     <script>
+      //Audio
+      var somIni = new Audio();
+      somIni.src = "Som/Inicio.m4a";
 
+      var somFim = new Audio();
+      somFim.src = "Som/Fim.m4a";
+
+      var somFimVitoria = new Audio();
+      somFimVitoria.src = "Som/Vitoria.m4a";
+
+      var somFogo = new Audio();
+      somFogo.src = "Som/Fogo.m4a";
+
+      var somMoeda = new Audio();
+      somMoeda.src = "Som/Moeda.m4a";
+
+      var somItem = new Audio();
+      somItem.src = "Som/Item.m4a";
+
+      var somPulo = new Audio();
+      somPulo.src = "Som/Pulo.m4a";
+
+      //Tela
       var canvas = document.getElementsByTagName("canvas")[0];
       var ctx = canvas.getContext("2d");
 
@@ -34,6 +56,7 @@
 
       function atualizar (t){
         if(cenario == 0){
+          somIni.play();
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -48,6 +71,7 @@
         } else if (cenario==1){
           //Seleção personagem
         } else if (cenario ==2){
+          somIni.play();
 
           ctx.fillStyle = "white";
           ctx.fillRect(0,0, canvas.width, canvas.height);
@@ -63,6 +87,8 @@
           //Conferir colisão com pisos especiais:
           if(mapa.verificaItem(personagem.gy,personagem.gx) == true || mapa.verificaItem(personagem.gyT,personagem.gxT) == true || mapa.verificaItem(personagem.gy,personagem.gxT) == true || mapa.verificaItem(personagem.gyT,personagem.gx) == true){
             personagem.itens+=1;
+            somMoeda.load();
+            somMoeda.play();
           }
 
           if(mapa.verificaComida(personagem.gy,personagem.gx) == true || mapa.verificaComida(personagem.gyT,personagem.gxT) == true || mapa.verificaComida(personagem.gy,personagem.gxT) == true || mapa.verificaComida(personagem.gyT,personagem.gx) == true){
@@ -70,9 +96,14 @@
             if(tempo>125){
               tempo=125;
             }
+            somItem.load();
+            somItem.play();
           }
           if(mapa.verificaEspinho(personagem.gy,personagem.gx) == true || mapa.verificaEspinho(personagem.gyT,personagem.gxT) == true || mapa.verificaEspinho(personagem.gy,personagem.gxT) == true || mapa.verificaEspinho(personagem.gyT,personagem.gx) == true){
             cenario=3;
+            somFogo.load();
+            somFogo.play();
+            somFim.play();
           }
 
 
@@ -81,10 +112,12 @@
           //Mudanças de variaveis globais
           tempo-=0.015;
           if(tempo<0){
+            somFim.play();
             cenario=3;
           }
           if(personagem.itens>11){
             vitoria=true;
+            somFimVitoria.play();
             cenario=3;
           }
 
@@ -92,6 +125,7 @@
           anterior = t;
           requestAnimationFrame(atualizar);
         } else if (cenario ==3){
+          somIni.pause();
           //Tela de Game Over
           //Tela de vitoria
           if(vitoria==true){
@@ -99,6 +133,7 @@
             ctx.textAlign = "center";
             ctx.fillStyle = "black";
             ctx.fillRect(0,0, canvas.width, canvas.height);
+            ctx.drawImage(imagem,0,0);
 
             //Texto Game Over
             ctx.fillStyle = "wheat";
@@ -112,6 +147,7 @@
             ctx.textAlign = "center";
             ctx.fillStyle = "black";
             ctx.fillRect(0,0, canvas.width, canvas.height);
+            ctx.drawImage(imagem,0,0);
 
             //Texto Game Over
             ctx.fillStyle = "wheat";
@@ -156,6 +192,8 @@
           case 38: //Botão Cima
             if(personagem.pulo == true){
               personagem.vy=-230;
+              somPulo.load();
+              somPulo.play();
             }
 
 
