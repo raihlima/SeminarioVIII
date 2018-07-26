@@ -13,6 +13,11 @@ function Foguete(cor){
   this.imagem.src = "Nave.png";
   this.fogo = new Image();
   this.fogo.src = "tiro.png";
+
+  this.somQuebrado = new Audio();
+  this.somQuebrado.src = "Som/Crash.m4a";
+
+
   //Seleção de color
   if(cor==0){
     this.color = "green";
@@ -86,6 +91,8 @@ Foguete.prototype.atualizar = function (dt) {
   if(this.y>500){
     this.vida-=1
     this.resetar();
+    this.somQuebrado.load();
+    this.somQuebrado.play();
   }
 };
 
