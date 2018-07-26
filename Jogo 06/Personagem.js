@@ -56,6 +56,9 @@ Personagem.prototype.moverNoMapa = function (map, dt) {
   this.y =  this.gy * map.SIZE;
 
   if(map.verificaMina(this.gy,this.gx)==true){
+    var somExplosao = new Audio();
+    somExplosao.src = "Som/Explosao.m4a";
+    somExplosao.play();
     this.vida-=1;
   }
 };
