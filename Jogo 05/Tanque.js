@@ -47,6 +47,9 @@ function Tanque(cor){
 Tanque.prototype.alteraEnergia = function(){
   this.energia-=25;
   if(this.energia<25){
+    var somExplosao = new Audio();
+    somExplosao.src = "Som/Explosao.m4a";
+    somExplosao.play();
     this.energia=100;
     this.vida-=1;
     this.resetarPosição();

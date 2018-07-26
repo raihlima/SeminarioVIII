@@ -13,7 +13,33 @@
   <h1>Jogo 05</h1>
   <canvas id="canvas" width="700" height="500"></canvas>
   <script>
+  //Audio
+  var somIni = new Audio();
+  somIni.src = "Som/Inicio.m4a";
 
+  var somFim = new Audio();
+  somFim.src = "Som/Fim.m4a";
+
+  var somSel = new Audio();
+  somSel.src = "Som/Selecao.m4a";
+
+  var somTiro = new Audio();
+  somTiro.src = "Som/Tiro.m4a";
+
+  var somExplosao = new Audio();
+  somExplosao.src = "Som/Explosao.m4a";
+
+  var somDano = new Audio();
+  somDano.src = "Som/Dano.m4a";
+
+  var somTiroBarreira = new Audio();
+  somTiroBarreira.src = "Som/Barreira.m4a";
+
+  var somDecisao = new Audio();
+  somDecisao.src = "Som/Decisao.m4a";
+
+
+  //Tela
   var canvas = document.getElementsByTagName("canvas")[0];
   var ctx = canvas.getContext("2d");
   var dt = anterior = 0;
@@ -49,6 +75,7 @@
 
   function atualizar(t){
     if(cenario == 0){
+      somIni.play();
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -67,6 +94,7 @@
 
     }
     else if (cenario == 1){
+      somIni.play();
 
       ctx.fillStyle = "black";
       ctx.fillRect(0,0, canvas.width, canvas.height);
@@ -135,6 +163,8 @@
 
     }
     else if (cenario == 2){
+      somFim.pause();
+      somIni.play();
       dt = (t - anterior)/1000;
 
       var bg = new Image();
@@ -145,13 +175,13 @@
         criarBarreira();
       }
 
+      //Não está sendo usado
       if(inimigo.length==0){
         criarInimigos();
       }
 
       //Desenhar o fundo
-      ctx.fillStyle = "black";
-      ctx.fillRect(0,0, canvas.width, canvas.height);
+
       ctx.drawImage(bg,0,0);
       //Desenhar os tanques
       tanque1.desenhar(ctx);
@@ -174,11 +204,15 @@
           break;
         }
         if(tiro[i].verificaColisao(tanque1)==true){
+          somDano.load();
+          somDano.play();
           tanque1.alteraEnergia();
           tiro.splice(i,1);
           break;
         }
         if(tiro[i].verificaColisao(tanque2)==true){
+          somDano.load();
+          somDano.play();
           tanque2.alteraEnergia();
           tiro.splice(i,1);
           break;
@@ -189,6 +223,8 @@
       for(var i=0;i<tiro.length;i++){
         for(var j=0;j<barreira.length;j++){
           if(tiro[i].verificaColisao(barreira[j])==true){
+            somTiroBarreira.load();
+            somTiroBarreira.play();
             tiro.splice(i,1);
             break;
           }
@@ -198,17 +234,23 @@
       //Verifica colisao com a barreira
       for(var i=0;i<barreira.length;i++){
         if(barreira[i].verificaColisao(tanque1)==true){
+          somExplosao.load();
+          somExplosao.play();
           tanque1.resetarPosição();
           tanque1.vida-=1;
         }
         if(barreira[i].verificaColisao(tanque2)==true){
           tanque2.resetarPosição();
+          somExplosao.load();
+          somExplosao.play();
           tanque2.vida-=1;
         }
       }
 
       //trocar de cenario quando alguem tem -1 vidas
       if(tanque1.vida<0 || tanque2.vida<0){
+        somIni.pause();
+        somFim.play();
         cenario=3;
       }
 
@@ -292,9 +334,13 @@
       case 13://Enter
       if(cenario==1){
         tanque1Pronto = 1;
+        somDecisao.load();
+        somDecisao.play();
         break;
       } else if(cenario ==2){
         if(tanque1.cadencia>1){
+          somTiro.load();
+          somTiro.play();
           tiro.push(new Tiro(tanque1.sentido,tanque1));
           tanque1.cadencia=0;
           //tanque2.vx=+40;
@@ -308,12 +354,7 @@
       }
 
       case 37: //Botão Esquerdo
-      if(cenario == 1){
-        if(foguete ==2 || foguete ==1){
-          foguete-=1;
-          break;
-        }
-      }
+
       if(cenario==2){
         tanque1.vx = -150;
         tanque1.sentido = 3;
@@ -322,9 +363,7 @@
       break;
       case 39: //Botão Direito
       if(cenario == 1){
-        if(foguete == 0 || foguete == 1){
-          foguete += 1;
-        }
+
       }
       if(cenario==2){
         tanque1.vx =150;
@@ -335,6 +374,8 @@
       case 38: //Botão Cima
       if(cenario ==1){
         if(tanque1Pronto == 0){
+          somSel.load();
+          somSel.play();
           if(tanque1==1){
             tanque1 = 0;
             break;
@@ -355,6 +396,8 @@
 
       case 40: //Botão Baixo
       if(cenario ==1){
+        somSel.load();
+        somSel.play();
         if(tanque1Pronto == 0){
           if(tanque1 == 0){
             tanque1=1;
@@ -385,6 +428,8 @@
       case 83: //Botao S //Baixo
       if(cenario==1){
         if(tanque2Pronto == false){
+          somSel.load();
+          somSel.play();
           if(tanque2==0){
             tanque2=1;
             break;
@@ -411,6 +456,8 @@
       case 87: // Botao W// Cima
       if(cenario==1){
         if(tanque2Pronto==false){
+          somSel.load();
+          somSel.play();
           if(tanque2==0){
             tanque2=1;
             break;
@@ -428,11 +475,15 @@
       }
       case 32://Espaço
       if(cenario==1){
+        somDecisao.load();
+        somDecisao.play();
         tanque2Pronto = true;
         break;
       }
       else if(cenario==2){
         if(tanque2.cadencia>1){
+          somTiro.load();
+          somTiro.play();
           tiro.push(new Tiro(tanque2.sentido,tanque2));
           tanque2.cadencia=0;
           //tanque2.vx=+40;
