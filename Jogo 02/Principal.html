@@ -14,6 +14,41 @@
     <h1>Jogo 02</h1>
     <canvas id="canvas" width="700" height="500"></canvas>
     <script>
+    //Audio
+    var somFim = new Audio();
+    somFim.src = "Som/Fim.m4a";
+    somFim.load();
+
+    var somIni = new Audio();
+    somIni.src = "Som/Tobu - Hope [NCS Release].mp3";
+    somIni.load();
+
+    var somSel = new Audio();
+    somSel.src = "Som/Cancel2.m4a";
+    somSel.load();
+
+    var somTiroA = new Audio();
+    somTiroA.src = "Som/Laser1.m4a";
+    somTiroA.load();
+
+    var somTiroI = new Audio();
+    somTiroI.src = "Som/Decision2.m4a";
+    somTiroI.load();
+
+    var somItem = new Audio();
+    somItem.src = "Som/Item.m4a";
+    somItem.load();
+
+    var somExplosao = new Audio();
+    somExplosao.src = "Som/Explosao.m4a";
+    somExplosao.load();
+
+    var somQuebrado = new Audio();
+    somQuebrado.src = "Som/Crash.m4a";
+
+    var somDano = new Audio();
+    somDano.src = "Som/Dano.m4a";
+
       var canvas = document.getElementsByTagName("canvas")[0];
       var ctx = canvas.getContext("2d");
       var dt = anterior = 0;
@@ -59,6 +94,7 @@
 
       function atualizar(t){
         if(cenario == 0){
+          somIni.play();
           var imagem = new Image();
           imagem.src = "bg.png";
           ctx.fillStyle = "black";
@@ -129,6 +165,7 @@
           requestAnimationFrame(atualizar);
 
         } else if (cenario == 2){
+          somIni.play();
 
           dt = (t - anterior)/1000;
 
@@ -174,6 +211,8 @@
               break;
             } else if(inimigo[i].verificaMorte()==true){
               var random = Math.random()*100;
+              somExplosao.load();
+              somExplosao.play();
               if(random<18){
                 item.push(new Item(inimigo[i].x,inimigo[i].y));
               }
@@ -187,6 +226,8 @@
             if(inimigo[i].cadencia>=2){
               tiroInimigo.push(new Tiro(1,inimigo[i],0))
               inimigo[i].cadencia=0;
+              somTiroI.load();
+              somTiroI.play();
             }
           }
 
@@ -220,6 +261,8 @@
           for(var i = 0; i<tiroInimigo.length;i++){
             if(imunidade>=10){
               if(tiroInimigo[i].verificaColisao(foguete)==true){
+                somDano.load();
+                somDano.play();
                 foguete.energia-=25;
                 imunidade=0;
                 }
@@ -231,6 +274,8 @@
           for(var i =0; i<inimigo.length;i++){
             if(imunidade>=10){
               if(foguete.colisao(inimigo[i])){
+                somDano.load();
+                somDano.play();
                 imunidade=0;
                 foguete.energia-=25;
               }
@@ -247,6 +292,8 @@
         //Pegar Item
         for(var i=0;i<item.length;i++){
           if(item[i].verificaColisao(foguete)==true){
+            somItem.load();
+            somItem.play();
             if(item[i].id==0){
               imunidade = -60;
               item.splice(i,1);
@@ -260,6 +307,8 @@
               item.splice(i,1);
               break;
             } else if( item[i].id==3){
+              somExplosao.load();
+              somExplosao.play();
               for(var j =0;j<inimigo.length;j++){
                 inimigo[j].energia=-1;
               }
@@ -293,6 +342,8 @@
 
         //Controle de Vidas
         if(foguete.energia==0){
+          somQuebrado.load();
+          somQuebrado.play();
           foguete.vida-=1;
           foguete.energia=100;
           imunidade=0;
@@ -301,6 +352,7 @@
         //Para tela de game over
         if(foguete.vida<1){
           cenario=3;
+          somFim.play();
         }
 
           //Desenhar o Foguete, Barra e a Inimigo
@@ -313,6 +365,7 @@
           requestAnimationFrame(atualizar);
         } else if (cenario ==3){
           //Tela de Game Over
+          somIni.pause();
           ctx.fillStyle = "black";
           ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -359,6 +412,8 @@
         case 32://Espaço
           if(cenario==2){
             if(cadencia>1){
+              somTiroA.load();
+              somTiroA.play();
               if(foguete.quantidadeTiro==1){
                 tiroNave.push(new Tiro(0,foguete,0));
                 cadencia=0;
@@ -380,6 +435,8 @@
           if(cenario == 1){
             if(foguete ==2 || foguete ==1){
               foguete-=1;
+              somSel.load();
+              somSel.play();
               break;
             }
           }
@@ -392,6 +449,8 @@
         if(cenario == 1){
           if(foguete == 0 || foguete == 1){
             foguete += 1;
+            somSel.load();
+            somSel.play();
           }
         }
         if(cenario==2){
